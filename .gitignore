@@ -8,3 +8,4 @@ rw/.env
 firebase-key.json.base64
 .env
 rw/.env
+firebase-key.json
