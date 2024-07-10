@@ -4,12 +4,17 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from html_creation import create_single_article_html
 from utils import create_url_slug
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
-# Use environment variables for configuration
-bucket_name = 'cryptoskopen-eu.appspot.com'
-base_dir = "/Users/_akira/hacker/automate/circel-sites-vergelijk/cryptoskopen-eu"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/_akira/hacker/automate/circel-sites-vergelijk/cryptoskopen-eu/cryptoskopen-eu-firebase-adminsdk-27tao-934f9f07a1.json'
+bucket_name = os.getenv('BUCKET_NAME')
+base_dir = os.getenv('BASE_DIR')
+google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+domain_name = os.getenv('DOMAIN_NAME', 'https://auto-cryptoskopen-1.web.app/')
+openai_api_key = os.getenv('OPENAI_API_KEY')
+mongo_uri = os.getenv('MONGO_URI')
 
 def initialize_firebase():
     if not firebase_admin._apps:

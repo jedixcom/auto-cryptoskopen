@@ -13,12 +13,33 @@ from mongo_utils import connect_to_mongo
 from openai_utils import generate_text, get_category, get_tags, translate_to_dutch
 from html_creation import create_single_article_html
 from html_update import update_category_index, update_index_html
-from utils import get_user_input, get_current_timestamp, create_url_slug, generate_summary, remove_original_images
+from utils import get_current_timestamp, create_url_slug, generate_summary, remove_original_images
+from dotenv import load_dotenv
 
-# Use environment variables for configuration
-bucket_name = 'cryptoskopen-eu.appspot.com'
-base_dir = "/Users/_akira/hacker/automate/circel-sites-vergelijk/cryptoskopen-eu"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/_akira/hacker/automate/circel-sites-vergelijk/cryptoskopen-eu/cryptoskopen-eu-firebase-adminsdk-27tao-934f9f07a1.json'
+# Load environment variables from .env file
+load_dotenv()
+
+bucket_name = os.getenv('BUCKET_NAME')
+base_dir = os.getenv('BASE_DIR')
+google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+domain_name = os.getenv('DOMAIN_NAME', 'https://auto-cryptoskopen-1.web.app/')
+openai_api_key = os.getenv('OPENAI_API_KEY')
+mongo_uri = os.getenv('MONGO_URI')
+
+# Debugging environment variables
+print(f"BUCKET_NAME: {bucket_name}")
+print(f"BASE_DIR: {base_dir}")
+print(f"GOOGLE_APPLICATION_CREDENTIALS: {google_application_credentials}")
+print(f"DOMAIN_NAME: {domain_name}")
+print(f"OPENAI_API_KEY: {openai_api_key}")
+print(f"MONGO_URI: {mongo_uri}")
+
+# Ensure all required environment variables are set
+if not all([bucket_name, base_dir, google_application_credentials, domain_name, openai_api_key, mongo_uri]):
+    raise ValueError("One or more required environment variables are not set.")
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
+openai.api_key = openai_api_key
 
 def rewrite_article(article, base_dir, bucket_name, domain_name, stop_words):
     try:
@@ -80,7 +101,6 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
 
 def main():
     try:
-        domain_name = get_user_input()
         print(f"Domain name set to: {domain_name}")
 
         initialize_firebase()
