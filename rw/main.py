@@ -41,6 +41,17 @@ if not all([bucket_name, base_dir, google_application_credentials, domain_name, 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
 openai.api_key = openai_api_key
 
+def create_directories_and_files(base_dir):
+    """Create necessary directories and files if they don't exist."""
+    blogx_dir = os.path.join(base_dir, 'blogx')
+    index_file = os.path.join(blogx_dir, 'index.html')
+
+    os.makedirs(blogx_dir, exist_ok=True)
+
+    if not os.path.exists(index_file):
+        with open(index_file, 'w') as file:
+            file.write('<html><body><h1>Index</h1></body></html>')
+
 def rewrite_article(article, base_dir, bucket_name, domain_name, stop_words):
     try:
         original_title = article["title"]
@@ -101,7 +112,11 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
 
 def main():
     try:
+        domain_name = 'https://auto-cryptoskopen-1.web.app/'
         print(f"Domain name set to: {domain_name}")
+
+        create_directories_and_files(base_dir)
+        print("Required directories and files created.")
 
         initialize_firebase()
         print("Firebase initialized.")
