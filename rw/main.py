@@ -21,10 +21,25 @@ load_dotenv()
 
 bucket_name = os.getenv('BUCKET_NAME')
 base_dir = os.getenv('BASE_DIR')
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 domain_name = os.getenv('DOMAIN_NAME', 'https://auto-cryptoskopen-1.web.app/')
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai_api_key = os.getenv('OPENAI_API_KEY')
 mongo_uri = os.getenv('MONGO_URI')
+
+# Debugging environment variables
+print(f"BUCKET_NAME: {bucket_name}")
+print(f"BASE_DIR: {base_dir}")
+print(f"GOOGLE_APPLICATION_CREDENTIALS: {google_application_credentials}")
+print(f"DOMAIN_NAME: {domain_name}")
+print(f"OPENAI_API_KEY: {openai_api_key}")
+print(f"MONGO_URI: {mongo_uri}")
+
+# Ensure all required environment variables are set
+if not all([bucket_name, base_dir, google_application_credentials, domain_name, openai_api_key, mongo_uri]):
+    raise ValueError("One or more required environment variables are not set.")
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
+openai.api_key = openai_api_key
 
 def rewrite_article(article, base_dir, bucket_name, domain_name, stop_words):
     try:
