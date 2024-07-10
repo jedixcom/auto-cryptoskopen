@@ -19,12 +19,11 @@ import os
 # Load environment variables from .env file
 load_dotenv()
 
-bucket_name = os.getenv('BUCKET_NAME')
-base_dir = os.getenv('BASE_DIR')
-google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-domain_name = os.getenv('DOMAIN_NAME', 'https://auto-cryptoskopen-1.web.app/')
-openai_api_key = os.getenv('OPENAI_API_KEY')
-mongo_uri = os.getenv('MONGO_URI')
+bucket_name = "auto-cryptoskopen-1.appspot.com"
+base_dir = "/Users/_akira/hacker/auto/cryptoskopen-website"
+domain_name = "https://auto-cryptoskopen-1.web.app/"
+openai_api_key = "sk-proj-r0Ly4atcz2levO4FG34RT3BlbkFJ16QUGkQUSddOVXt4jnE6"
+mongo_uri = "mongodb+srv://uas1:3890Hoi123@cluster0.elk3l4f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 # Debugging environment variables
 print(f"BUCKET_NAME: {bucket_name}")
