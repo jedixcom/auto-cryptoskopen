@@ -12,7 +12,7 @@ from mongo_utils import connect_to_mongo
 from openai_utils import generate_text, get_category, get_tags, translate_to_dutch
 from html_creation import create_single_article_html
 from html_update import update_category_index, update_index_html
-from utils import get_user_input, get_current_timestamp, create_url_slug, generate_summary, remove_original_images
+from utils import get_current_timestamp, create_url_slug, generate_summary, remove_original_images
 from dotenv import load_dotenv
 import os
 
@@ -22,7 +22,7 @@ load_dotenv()
 bucket_name = os.getenv('BUCKET_NAME')
 base_dir = os.getenv('BASE_DIR')
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-domain_name = os.getenv('DOMAIN_NAME')
+domain_name = os.getenv('DOMAIN_NAME', 'https://auto-cryptoskopen-1.web.app/')
 openai.api_key = os.getenv('OPENAI_API_KEY')
 mongo_uri = os.getenv('MONGO_URI')
 
@@ -86,7 +86,6 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
 
 def main():
     try:
-        domain_name = get_user_input()
         print(f"Domain name set to: {domain_name}")
 
         initialize_firebase()
