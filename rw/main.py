@@ -34,6 +34,7 @@ print(f"DOMAIN_NAME: {domain_name}")
 print(f"OPENAI_API_KEY: {openai_api_key}")
 print(f"MONGO_URI: {mongo_uri}")
 
+
 # Ensure all required environment variables are set
 if not all([bucket_name, base_dir, google_application_credentials, domain_name, openai_api_key, mongo_uri]):
     raise ValueError("One or more required environment variables are not set.")
