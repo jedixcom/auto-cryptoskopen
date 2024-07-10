@@ -1,0 +1,38 @@
+name: Deploy to Firebase
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        name: Build and Deploy
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: '3.12'
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Set environment variables
+              run: |
+                  echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> $GITHUB_ENV
+                  echo "BASE_DIR=${{ github.workspace }}" >> $GITHUB_ENV
+                  echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-key.json" >> $GITHUB_ENV
+                  echo "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}" >> $GITHUB_ENV
+                  echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+                  echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
+
+            - name: Add Firebase service account key
+              run: |
+                  echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > $GITHUB_WORKSPACE/firebase-key.json
