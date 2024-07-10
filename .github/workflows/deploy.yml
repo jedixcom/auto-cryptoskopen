@@ -33,9 +33,9 @@ jobs:
                   echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
                   echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
 
-            - name: Add Firebase service account key
+            - name: Create Firebase service account key
               run: |
-                  echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > $GITHUB_WORKSPACE/firebase-key.json
+                  echo "${{ secrets.FIREBASE_KEY_BASE64 }}" | base64 -d > $GITHUB_WORKSPACE/firebase-key.json
 
             - name: Run Python script
               run: python rw/main.py
@@ -44,6 +44,6 @@ jobs:
               uses: FirebaseExtended/action-hosting-deploy@v0
               with:
                   repoToken: '${{ secrets.GITHUB_TOKEN }}'
-                  firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+                  firebaseServiceAccount: '${{ github.workspace }}/firebase-key.json'
                   channelId: live
                   projectId: auto-cryptoskopen-1
