@@ -36,3 +36,14 @@ jobs:
             - name: Add Firebase service account key
               run: |
                   echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > $GITHUB_WORKSPACE/firebase-key.json
+
+            - name: Run Python script
+              run: python rw/main.py
+
+            - name: Deploy to Firebase
+              uses: FirebaseExtended/action-hosting-deploy@v0
+              with:
+                  repoToken: '${{ secrets.GITHUB_TOKEN }}'
+                  firebaseServiceAccount: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
+                  channelId: live
+                  projectId: auto-cryptoskopen-1
