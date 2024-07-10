@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <link rel="manifest" href="https://cryptoskopen.eu/manifest.json">
+     
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes, user-scalable=yes">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://cryptoskopen.eu/resources/f.ico" type="image/x-icon">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Meta Information -->
+    <title>CryptosKopen.eu - Cryptocurrency Info, Nieuws en Vergelijken</title>
+    <meta name="title" content="CryptosKopen.eu - Cryptocurrency Info, Nieuws en Vergelijken">
+    <meta name="description" content="Cryptoskopen.eu - Crypto Currency Nieuws, Info, Nieuws en Vergelijken, het laatste Cryptocurrency  Nieuws, Nederland.">
+    <meta name="keywords" content="cryptoskopen.eu, Cryptocurrency, Blockchain, Nieuws, Nederland">
+    <meta name="author" content="cryptoskopen.eu">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="3 days">
+    <meta name="language" content="Dutch">
+    <meta name="rating" content="General">
+    <meta name="distribution" content="Global">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cryptoskopen.eu">
+    <meta property="og:title" content="CCryptoskopen.eu - Crypto Currency Nieuws, Info, Nieuws en Vergelijken, het laatste Cryptocurrency  Nieuws, Nederland.">
+    <meta property="og:image" content="https://cryptoskopen.eu/resources/logo.webp">
+    <meta property="og:site_name" content="cryptoskopen.eu">
+    <meta property="og:locale" content="nl_NL">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://cryptoskopen.eu">
+    <meta name="twitter:title" content="CryptosKopen.eu - Cryptocurrency Info, Nieuws en Vergelijken">
+    <meta name="twitter:description" content="Cryptoskopen.eu - Crypto Currency Nieuws, Info, Nieuws en Vergelijken, het laatste Cryptocurrency  Nieuws, Nederland.">
+    <meta name="twitter:image" content="https://cryptoskopen.eu/resources/logo.webp">
+    <meta name="twitter:site" content="@cryptoskopen_eu">
+    <meta name="twitter:creator" content="@cryptoskopen_eu">
+
+    <!-- Schema.org / Google+ -->
+    <meta itemprop="name" content="CryptosKopen.eu - Cryptocurrency Info, Nieuws en Vergelijken">
+    <meta itemprop="description" content="Cryptoskopen.eu - Crypto Currency Nieuws, Info, Nieuws en Vergelijken, het laatste Cryptocurrency  Nieuws, Nederland.">
+    <meta itemprop="image" content="https://cryptoskopen.eu/resources/logo.webp">
+
+    <!-- Mobile Web App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="cryptoskopen.eu">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://cryptoskopen.eu/resources/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://cryptoskopen.eu/resources/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://cryptoskopen.eu/resources/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="https://cryptoskopen.eu/resources/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://cryptoskopen.eu/resources/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="https://cryptoskopen.eu/resources/favicon-32x32.png" sizes="64x64">
+    <link rel="mask-icon" href="https://cryptoskopen.eu/resources/mask.png" color="#000000">
+   
+
+    <meta name="theme-color" content="#ffffff">
+    <meta name="msapplication-navbutton-color" content="#ffffff">
+    <meta name="application-name" content="CryptosKopen.eu - Cryptocurrency Info, Nieuws en Vergelijken">
+    <meta name="msapplication-starturl" content="https://cryptoskopen.eu">
+    <meta name="msapplication-TileImage" content="https://cryptoskopen.eu/resources/logo.webp">
+    <meta name="msapplication-TileColor" content="#ffffff">
+
+    <!-- Custom styles -->
+   <style>
+    @media (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+        }
+        .main-content, .sidebar {
+            width: 100%;
+        }
+    }
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+    }
+    body, .main-container {
+        display: flex;
+        flex-direction: column; 
+    }
+    body .site-header {
+        width: 100%;
+        top: 0; 
+        position: relative; 
+    }
+    header {
+        order: -1; 
+    }
+    header {
+        background: #000000;
+        color: #000;
+        padding: 1rem 0;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    header .site-title {
+        color: #FFA500;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    header h1 {
+        color: #000;
+        font-weight: 900;
+        font-size: 44px;
+    }
+    h1 {
+        color: #000;
+        font-size: 33px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f0f0f0;
+      padding: 20px;
+      opacity: 0; /* Initially hidden */
+      transition: opacity 5s ease; /* Smooth transition */
+    }
+
+    footer.visible {
+      opacity: 1; /* Show footer */
+    }
+    .h1 {
+        font-size: 55px;
+        font-weight: bold;
+        text-decoration: none;
+        background-color: #fff;
+        color: #000;
+        text-align: left;
+        display: block;
+    }
+    
+    .h1:hover {
+        background-color: #000;
+        color: #FFA500;
+        text-decoration: none;
+    }
+    h2 {
+        color: #000;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    .article h3 {
+    margin: 1rem 0;
+    font-size: 1.5rem; /* Adjust font size as needed */
+    font-weight: bold;
+	}
+	
+	.article h3 a {
+		color: #fff; /* Ensures the text is black */
+		text-decoration: none;
+	}
+	
+	.article h3 a:hover {
+		color: #FFA500; /* Change color to red on hover */
+	}
+    .navbar {
+        width: 100%;
+        justify-content: center;
+    }
+    .navbar-toggler {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .navbar-collapse {
+        justify-content: center;
+        display: flex;
+        width: 100%;
+    }
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .navbar-nav .nav-link {
+        color: #000;
+        padding: 0.5rem;
+        width: 100%;
+        text-align: center;
+    }
+    .dropdown-menu {
+        text-align: center;
+        width: 100%;
+    }
+    @media (min-width: 992px) {
+        .navbar-nav {
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+    .navbar-nav .nav-item .nav-link {
+        color: #000;
+        font-weight: 500;
+    }
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #FFA500;
+    }
+    .main-container {
+        display: flex;
+        flex-direction: column; /* This aligns the children vertically */
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    .main-content {
+        flex: 3;
+        margin-right: 2rem;
+    }
+    .sidebar {
+        flex: 1;
+    }
+    .read-more {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #000;
+        color: #fff;
+        font-weight: bold;
+        text-align: left;
+        text-decoration: none;
+        font-size: 1.2rem;
+        display: block;
+    }
+    .widget {
+        margin-bottom: 2rem;
+        background: #fff;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .widget-title {
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .search-bar input[type="text"] {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .search-bar button {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #000000;
+        color: white;
+        font-weight: bold;
+    }
+    .search-bar button:hover {
+        background-color: #000;
+        color: #FFA500;
+        text-decoration: none;
+    }
+    .widget_recent_entries ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+    .widget_recent_entries ul li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: #000; /* Ensures the text is black */
+    }
+    .widget_recent_entries ul li a {
+        color: #000; /* Ensures the text is black */
+        text-decoration: none;
+        flex: 1;
+        font-size: 14px;
+    }
+    .widget_recent_entries ul li img {
+        width: 50px;
+        height: auto;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
+    .widget_recent_entries ul li a:hover {
+        text-decoration: none;
+        color: #FFA500;
+    }
+    .navbar .navbar-nav .nav-item {
+        position: center;
+    }
+    .navbar .navbar-nav .nav-item .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #FFA500;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    .navbar .navbar-nav .nav-item:hover .dropdown-menu {
+        display: block;
+    }
+    .navbar .navbar-nav .dropdown-menu li {
+        padding: 8px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    .navbar .navbar-nav .dropdown-menu li a {
+        color: black;
+        text-decoration: none; /* Removes underline from links */
+    }
+    .navbar .navbar-nav .dropdown-menu li a:hover {
+        background-color: #ddd; /* Gray background on hover */
+    }
+    .share-options {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+    .share-options a {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: #ddd;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+    }
+    .share-options a img {
+        width: 15px;
+        height: 15px;
+    }
+    .footer {
+        padding: 1rem;
+        text-align: center;
+        background: #000;
+        color: #FFA500;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+        flex-direction: column;
+    }
+    .footer .footer-links a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+    .footer .footer-links a:hover {
+        color: #FFA500;
+        text-decoration: none;
+    }
+    .article {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center the content horizontally */
+    }
+    .article h2 a {
+        color: #fff; /* Ensures the text is black */
+        text-decoration: none;
+    }
+    .article h2 a:hover {
+        color: #FFA500; /* Change color to red on hover */
+        text-decoration: none;
+    }
+    .widget_recent_entries {
+        margin-bottom: 2rem;
+        background: #fff;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .content-block {
+        display: none;
+    }
+    @media (min-width: 768px) {
+      .main-container {
+        flex-direction: row;
+      }
+      .main-content {
+        margin-right: 1rem;		
+	  }
+	}
+</style>
+</head>
+<body>
+<header class="site-header">
+	<img src="https://cryptoskopen.eu/resources/logo.webp" alt="headlinesmagazine news logo" style="width: 3.5%;">
+    <a href="https://cryptoskopen.eu" class="site-title">  CryptosKopen.EU - InSider Nieuws</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/technology">Technology</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/cryptocurrency">Cryptocurrency</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/blockchain">Blockchain</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/finance">Finance</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/bitcoin">Bitcoin</a></li>
+         		<li class="nav-item"><a class="nav-link" href="/category/hacking">Hacking</a></li>
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
+                    <div class="dropdown-menu text-center" aria-labelledby="aboutDropdown">
+                        <a class="dropdown-item" href="/privacy-policy">Privacy Policy</a>
+                        <a class="dropdown-item" href="/terms-of-service">Terms of Service</a>
+                        <a class="dropdown-item" href="/disclaimer">Disclaimer</a>
+                        <a class="dropdown-item" href="/contact">Contact</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="main-container">
+<div class="main-content" id="main-content">
+
+<div class="content-block">
+
+    <h1><a href="https://cryptoskopen.eu" class="h1">CryptoKopen.eu - Online Crypto Currency Kopen, uw website voor Cryptocurrency Informatie, Nieuws en Vergelijken voor Nederland</a></h1>
+    <br>
+    <p>Welkom bij CryptoKopen.eu - Online Crypto Currency Kopen, uw ultieme bron voor alles wat met cryptocurrency te maken heeft in Nederland. Of u nu een beginner bent die net begint met Bitcoin of een ervaren handelaar die geïnteresseerd is in de nieuwste trends op het gebied van Ethereum en andere altcoins, wij hebben alle informatie die u nodig heeft. Ontdek de wereld van digitale valuta, blockchain-technologie en meer op één handige plek.</p>
+
+<h2>Bitcoin</h2>
+
+<p>Bitcoin is de eerste en meest bekende cryptocurrency ter wereld. Bij CryptoKopen.eu bieden wij uitgebreide informatie over Bitcoin, van de basisprincipes tot geavanceerde handelstechnieken. Leer hoe u veilig Bitcoin kunt kopen, opslaan en verhandelen.</p>
+
+<h2>Blockchain</h2>
+
+<p>De blockchain is de technologie die aan de basis ligt van alle cryptocurrencies. Ontdek hoe blockchain werkt en waarom het de financiële wereld revolutioneert. Onze gedetailleerde gidsen en artikelen helpen u de complexiteit van deze baanbrekende technologie te begrijpen.</p>
+
+<h2>Ethereum</h2>
+
+<p>Ethereum is meer dan alleen een digitale valuta; het is een platform voor gedecentraliseerde toepassingen (dApps) en smart contracts. Leer alles over Ethereum, hoe het verschilt van Bitcoin en hoe u kunt profiteren van de mogelijkheden die het biedt.</p>
+
+<h2>Crypto Trading</h2>
+
+<p>Crypto trading kan winstgevend maar ook risicovol zijn. Wij bieden gedetailleerde analyses, strategieën en tips om u te helpen succesvol te handelen in cryptocurrencies. Of u nu geïnteresseerd bent in day trading of lange termijn investeringen, wij hebben de informatie die u nodig heeft.</p>
+
+<h2>Altcoins</h2>
+
+<p>Naast Bitcoin en Ethereum zijn er duizenden andere cryptocurrencies bekend als altcoins. Ontdek de meest veelbelovende altcoins, hun unieke kenmerken en hoe u deze kunt verhandelen.</p>
+
+<h2>Decentralized Finance (DeFi)</h2>
+
+<p>DeFi is een snelgroeiende sector binnen de cryptocurrency wereld die traditionele financiële diensten vervangt door gedecentraliseerde alternatieven. Lees meer over DeFi-projecten, hoe ze werken en welke voordelen ze bieden.</p>
+
+<h2>Cryptocurrency Exchange</h2>
+
+<p>Een cryptocurrency exchange is een platform waar u digitale valuta kunt kopen, verkopen en verhandelen. Wij vergelijken de beste exchanges in Nederland, zodat u de juiste keuze kunt maken.</p>
+
+<h2>Crypto Wallet</h2>
+
+<p>Een veilige crypto wallet is essentieel voor het opslaan van uw digitale valuta. Wij bespreken de verschillende soorten wallets en helpen u bij het kiezen van de beste optie voor uw behoeften.</p>
+
+<h2>Smart Contracts</h2>
+
+<p>Smart contracts zijn zelfuitvoerende contracten met de voorwaarden van de overeenkomst direct in code geschreven. Leer hoe smart contracts werken en hoe ze de toekomst van zakelijke transacties vormgeven.</p>
+
+<h2>Initial Coin Offering (ICO)</h2>
+
+<p>Een ICO is een manier voor nieuwe cryptocurrencies om fondsen te werven. Ontdek wat een ICO is, hoe het werkt en waar u op moet letten bij het investeren in een ICO.</p>
+
+<h2>Non-Fungible Tokens (NFTs)</h2>
+
+<p>NFTs zijn unieke digitale assets die eigendom vertegenwoordigen van een specifiek item of stuk content. Leer meer over NFTs en hun groeiende populariteit in kunst, muziek en gaming.</p>
+
+<h2>Mining</h2>
+
+<p>Cryptocurrency mining is het proces van het verifiëren van transacties en het toevoegen ervan aan de blockchain. Lees over de technische aspecten van mining, de benodigde hardware en hoe u kunt beginnen.</p>
+
+<h2>Crypto Regulations</h2>
+
+<p>Cryptocurrencies opereren in een complexe juridische omgeving. Blijf op de hoogte van de laatste regelgeving en hoe deze uw investeringen en handel kunnen beïnvloeden.</p>
+
+<h2>Stablecoins</h2>
+
+<p>Stablecoins zijn cryptocurrencies die zijn gekoppeld aan een stabiele asset zoals de Amerikaanse dollar. Ontdek hoe stablecoins werken en waarom ze een belangrijke rol spelen in de cryptocurrency markt.</p>
+
+<h2>Cryptocurrency Market Trends</h2>
+
+<p>Blijf op de hoogte van de laatste trends en ontwikkelingen in de cryptocurrency markt. Wij bieden diepgaande analyses en voorspellingen om u te helpen geïnformeerde beslissingen te nemen.</p>
+
+<h2>Digital Currency</h2>
+
+<p>Digitale valuta’s zijn de toekomst van geld. Leer over de verschillende soorten digitale valuta’s, hoe ze werken en welke voordelen ze bieden ten opzichte van traditionele valuta’s.</p>
+
+<h2>Tokenomics</h2>
+
+<p>Tokenomics verwijst naar de economie van een cryptocurrency token. Begrijp de principes achter token distributie, gebruik en waardecreatie.</p>
+
+<h2>Ledger Technology</h2>
+
+<p>Ledger technologie is cruciaal voor de veiligheid en integriteit van cryptocurrencies. Lees meer over hoe ledgers werken en waarom ze belangrijk zijn.</p>
+
+<h2>Crypto Investment</h2>
+
+<p>Investeren in cryptocurrencies kan zeer winstgevend zijn. Ontvang tips, strategieën en advies over hoe u kunt beginnen met investeren in deze spannende markt.</p>
+
+<h2>Peer-to-Peer (P2P) Transactions</h2>
+
+<p>P2P transacties stellen gebruikers in staat om direct met elkaar te handelen zonder tussenkomst van een derde partij. Ontdek de voordelen van P2P transacties en hoe ze werken.</p>
+
+<p>Bij CryptoKopen.eu zijn we toegewijd om u te voorzien van de meest nauwkeurige en up-to-date informatie over cryptocurrencies. Bezoek onze website regelmatig voor het laatste nieuws, diepgaande artikelen en uitgebreide handleidingen om u te helpen succesvol te navigeren in de wereld van digitale valuta.</p>
+<br>
+    <p>CryptosKopen.eu biedt uitgebreide informatie, nieuws en vergelijkingen over cryptocurrency in Nederland. Blijf op de hoogte van het laatste cryptocurrency nieuws uit Nederland met actuele en betrouwbare berichtgeving. Bij CryptosKopen.eu is jouw bestemming voor het meest recente cryptocurrency en blockchain nieuws, met meerdere categorieën die elk uur worden bijgewerkt om je geïnformeerd en betrokken te houden. We brengen je unieke dagelijkse cryptocurrency en blockchain nieuwsberichten, zodat je nooit iets mist van wat er in de wereld gebeurt. Het beste van alles is dat onze inhoud voor iedereen gratis te gebruiken is.</p>
+
+<h2>CryptoKopen.eu - Online Crypto Currency Kopen, uw website voor Cryptocurrency Informatie, Nieuws en Vergelijken voor Nederland</h2>
+
+<p>CryptosKopen.eu begrijpt het belang van up-to-date blijven met de huidige gebeurtenissen in de cryptocurrency wereld. Ons team van toegewijde journalisten en redacteuren werkt dag en nacht om je het laatste cryptocurrency en blockchain nieuws te brengen: Online Crypto Currency Kopen, de website voor Cryptocurrency en Blockchain Informatie, Nieuws en ook Vergelijken, voor Nederland, in het Nederlands, Dutch. De laatste nieuwtjes, elk uur (60 minuten) bijgewerkt en ge-update of het nu gaat om breaking news, diepgaande analyses of trending stories, erc-20,  wij hebben het allemaal. Vergelijk verschillende cryptocurrencies en blijf op de hoogte van de laatste ontwikkelingen en trends. CryptosKopen.eu is jouw bron voor betrouwbare en actuele informatie over cryptocurrency in Nederland.</p>
+
+<p>Bij CryptosKopen.eu streven we ernaar om een uitgebreide dekking van de cryptocurrency-markt te bieden. Of je nu een doorgewinterde handelaar bent of net begint met het verkennen van de wereld van digitale valuta, wij hebben de informatie die je nodig hebt. Onze nieuwssectie dekt alles van prijsbewegingen en marktanalyses tot de nieuwste ontwikkelingen in blockchain-technologie en regelgeving. Met onze up-to-date artikelen en diepgaande rapporten blijf je altijd voorop lopen.</p>
+
+<p>Onze vergelijkingssectie biedt gedetailleerde reviews en vergelijkingen van verschillende cryptocurrencies, beurzen en wallets. Dit helpt je om weloverwogen beslissingen te nemen over waar je je geld in investeert en welke platforms het beste aan jouw behoeften voldoen. Bij CryptosKopen.eu geloven we in transparantie en nauwkeurigheid, en we zorgen ervoor dat al onze reviews eerlijk en ongekleurd zijn, zodat je kunt vertrouwen op de informatie die je leest.</p>
+
+<p>Daarnaast bieden we educatieve bronnen voor diegenen die hun kennis over cryptocurrency en blockchain willen verdiepen. Onze gidsen en tutorials zijn ontworpen om complexe onderwerpen toegankelijk en begrijpelijk te maken, ongeacht je ervaringsniveau. Of je nu meer wilt weten over de basisprincipes van blockchain, hoe je veilig kunt investeren in cryptocurrencies, of de nieuwste trends in de markt wilt begrijpen, CryptosKopen.eu heeft de bronnen die je nodig hebt.</p>
+
+<p>CryptosKopen.eu is niet alleen een nieuws- en informatiesite; het is een community. We moedigen onze lezers aan om deel te nemen aan discussies, vragen te stellen en hun ervaringen te delen. Door een betrokken en ondersteunende gemeenschap te creëren, hopen we bij te dragen aan de bredere acceptatie en begrip van cryptocurrency en blockchain-technologie in Nederland en daarbuiten.</p>
+
+<p>Bezoek CryptosKopen.eu regelmatig om op de hoogte te blijven van de snel evoluerende wereld van cryptocurrency. Schrijf je in voor onze nieuwsbrief om het laatste nieuws direct in je inbox te ontvangen, en volg ons op sociale media voor real-time updates en exclusieve content. Bij CryptosKopen.eu zijn we toegewijd aan het leveren van de beste en meest betrouwbare informatie over cryptocurrency en blockchain, zodat jij altijd een stap voor blijft.</p>   
+</div>
+    </div>
+    <aside class="sidebar">
+            <!-- Recent Posts -->
+            <div id="recent-posts-2" class="widget widget_recent_entries">
+                <h3 class="widget-title">Recent Posts</h3>
+                <ul id="recent-posts-list">
+                    <!-- Recent posts will be injected here -->
+                </ul>
+            </div>
+            <!-- Tags Sidebar -->
+            <div id="tag-sidebar" class="widget widget_tags">
+                <h3 class="widget-title">Tags</h3>
+                <ul>
+                    <!-- Tags will be injected here -->
+                </ul>
+            </div>
+            <!-- Categories -->
+            <div id="categories-2" class="widget widget_categories">
+                <h3 class="widget-title">Categories</h3>
+                <ul>
+                    <li><a href="/category/cryptocurrency">Cryptocurrency</a></li>
+                    <li><a href="/category/finance">Finance</a></li>
+                    <li><a href="/category/technology">Technology</a></li>
+                    <li><a href="/category/blockchain">Blockchain</a></li>
+                    <li><a href="/crypto-markets">Crypto Markets</a></li>
+                    <li><a href="/crypto-trading">Crypto Trading</a></li>
+                    <li><a href="/crypto-exchanges">Crypto Exchanges</a></li>
+                    <li><a href="/crypto-wallets">Crypto Wallets</a></li>
+                    <li><a href="/crypto-mining">Crypto Mining</a></li>
+                    <li><a href="/crypto-stocks">Crypto Stocks</a></li>
+                    <li><a href="/crypto-funds">Crypto Funds</a></li>
+                    <li><a href="/crypto-investments">Crypto Investments</a></li>
+                    <li><a href="/crypto-trading-strategies">Crypto Trading Strategies</a></li>
+                    <li><a href="/crypto-trading-platforms">Crypto Trading Platforms</a></li>
+                    <li><a href="/crypto-trading-algorithms">Crypto Trading Algorithms</a></li>
+                    <li><a href="/crypto-trading-bots">Crypto Trading Bots</a></li>
+                </ul>
+            </div>
+        </aside><footer class="footer">
+    <div class="footer-links">
+        <a href="/privacy-policy">Privacybeleid</a>
+        <a href="/cookie-policy">Cookiebeleid</a>
+        <a href="/terms-of-service">Gebruiksvoorwaarden</a>
+        <a href="/avg">AVG</a>
+        <a href="/gpdr">GPDR</a>
+        <a href="/disclaimer">Disclaimer</a>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    window.addEventListener('scroll', function() {
+      // Get the current scroll position
+      const scrollY = window.scrollY;
+
+      // Check if the scroll position is greater than 100px
+      if (scrollY > 50) {
+        // Add the 'visible' class to the footer
+        document.querySelector('footer').classList.add('visible');
+      } else {
+        // Remove the 'visible' class from the footer
+        document.querySelector('footer').classList.remove('visible');
+      }
+    });
+  </script>
+<script>
+    async function loadBlogs() {
+        try {
+            const response = await fetch('https://cryptoskopen-eu-e5c24094abb7.herokuapp.com/get-blogs');
+            const blogs = await response.json();
+            const container = document.getElementById('main-content');
+            const recentPostsList = document.getElementById('recent-posts-list');
+            const tagsList = document.getElementById('tag-sidebar').querySelector('ul');
+
+            // Sort blogs by date if they have a date property
+            blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            blogs.forEach((blog) => {
+                const article = document.createElement('div');
+                article.className = 'article';
+
+                // Use the stored slug for URLs
+                const titleSlug = blog.slug;
+                const category = blog.category.toLowerCase();
+
+                // Remove original images from cointelegraph
+                let fullText = blog.full_text.replace(/<img[^>]*src="https:\/\/images\.cointelegraph\.com\/[^>]*>/g, '');
+
+                // Limit the preview text to 300 words
+                let previewText = fullText.split(' ').slice(0, 300).join(' ');
+
+                // Create the tags HTML
+                const tagsHtml = blog.tags.map(tag => `<a href="/tags/${tag.toLowerCase().replace(/\s+/g, '-')}">${tag}</a>`).join(', ');
+
+                // Convert the date to Amsterdam time
+                const publishedDate = new Date(blog.published);
+                const amsterdamOffset = 120; // Amsterdam time offset from UTC in minutes (UTC+2)
+                const localDate = new Date(publishedDate.getTime() + (amsterdamOffset - publishedDate.getTimezoneOffset()) * 60000);
+                const dateOptions = {
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit'
+                };
+                const formattedDate = localDate.toLocaleString('nl-NL', dateOptions);
+
+                // Log the blog data to troubleshoot image issues
+                console.log(blog);
+                article.innerHTML = `
+                    
+                    <h3><a href="/category/${category}/${titleSlug}.html" class="read-more">${blog.title}</a></h3>
+                    <style="text-align: left;"><strong>Published on:</strong> ${formattedDate}<strong>        <br> Publisher:</strong> CryptosKopen.EU</p>
+                    ${blog.image_url ? `<img src="${blog.image_url}" alt="${blog.title}" style="width: 50%;" onerror="this.onerror=null;this.src='https://via.placeholder.com/400';">` : ''}
+                    <p>${previewText}...</p>
+                    <p><strong>Category:</strong> <a href="/category/${category}">${blog.category}</a></p>
+                    <p><strong>Tags:</strong> ${tagsHtml}</p>
+                    
+                    
+                    <div class="share-options">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" title="Share on Facebook"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" rel="nofollow"></a>
+                        <a href="https://www.instagram.com/?url=${encodeURIComponent(window.location.href)}" target="_blank" title="Share on Instagram"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram" rel="nofollow"></a>
+                        <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}" target="_blank" title="Share on Twitter"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" rel="nofollow"></a>
+                        <a href="https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}" target="_blank" title="Share on Pinterest"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="Pinterest" rel="nofollow"></a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}" target="_blank" title="Share on LinkedIn"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" rel="nofollow"></a>
+                        <a href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(window.location.href)}" target="_blank" title="Share on Tumblr"><img src="https://cdn-icons-png.flaticon.com/512/733/733635.png" alt="Tumblr" rel="nofollow"></a>
+                        <a href="https://www.reddit.com/submit?url=${encodeURIComponent(window.location.href)}" target="_blank" title="Share on Reddit" rel="nofollow"><img src="https://cdn-icons-png.flaticon.com/512/733/733609.png" alt="Reddit"></a>
+                    </div>
+                `;
+                container.prepend(article);
+
+                // Check if <h3> is present in the article
+                const h3Header = article.querySelector('h3');
+                if (h3Header) {
+                    console.log(`Article with title: "${blog.title}" has an <h3> header.`);
+                } else {
+                    console.log(`Article with title: "${blog.title}" is missing an <h3> header.`);
+                }
+
+                // Add to recent posts
+                const recentPostItem = document.createElement('li');
+                recentPostItem.innerHTML = `
+                    ${blog.image_url ? `<img src="${blog.image_url}" alt="${blog.title}" style="width: 50%;" onerror="this.onerror=null;this.src='https://via.placeholder.com/50';">` : ''}
+                    <a href="/category/${category}/${titleSlug}.html">${blog.title.slice(0, 300)}</a>
+                `;
+                recentPostsList.prepend(recentPostItem);
+
+                // Inject tags
+                blog.tags.forEach(tag => {
+                    const tagItem = document.createElement('li');
+                    tagItem.innerHTML = `<a href="/tags/${tag.toLowerCase().replace(/\s+/g, '-')}">${tag}</a>`;
+                    tagsList.prepend(tagItem);
+                });
+            });
+
+            // Log a summary of articles fetched and rendered
+            console.log(`Total number of articles fetched: ${blogs.length}`);
+            console.log(`Total number of articles rendered: ${container.querySelectorAll('.article').length}`);
+        } catch (error) {
+            console.error('Error loading blogs:', error);
+            alert('Error loading blogs: ' + error.message);
+        }
+    }
+
+    // Call the function to load blogs
+    loadBlogs();
+</script>
+</body>
+</html>
