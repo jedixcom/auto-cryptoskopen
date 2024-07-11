@@ -41,7 +41,7 @@ jobs:
 
             - name: Set up OpenVPN configuration
               run: |
-                  mkdir -p $GITHUB_WORKSPACE/etc/openvpn
+                  mkdir -p /etc/openvpn
                   echo '
                   client
                   dev tun
@@ -57,7 +57,7 @@ jobs:
 
                   remote-cert-tls server
 
-                  auth-user-pass $GITHUB_WORKSPACE/etc/openvpn/credentials.txt
+                  auth-user-pass /etc/openvpn/credentials.txt
 
                   #comp-lzo
                   verb 3
@@ -123,27 +123,27 @@ jobs:
                   134d3a3aa2f904512e85aa2dc2202498
                   -----END OpenVPN Static key V1-----
                   </tls-auth>
-                  ' | sudo tee $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf > /dev/null
+                  ' | sudo tee /etc/openvpn/surfshark.conf > /dev/null
 
             - name: Ensure VPN is connected
-              run: sudo cat $GITHUB_WORKSPACE/etc/openvpn/surfshark-status.log
+              run: sudo cat /etc/openvpn/surfshark-status.log
 
             - name: Add Surfshark credentials
               run: |
-                  echo "${{ secrets.SURFSHARK_USERNAME }}" | sudo tee $GITHUB_WORKSPACE/etc/openvpn/credentials.txt > /dev/null
-                  echo "${{ secrets.SURFSHARK_PASSWORD }}" | sudo tee -a $GITHUB_WORKSPACE/etc/openvpn/credentials.txt > /dev/null
-                  sudo chmod 600 $GITHUB_WORKSPACE/etc/openvpn/credentials.txt
+                  echo "${{ secrets.SURFSHARK_USERNAME }}" | sudo tee /etc/openvpn/credentials.txt > /dev/null
+                  echo "${{ secrets.SURFSHARK_PASSWORD }}" | sudo tee -a /etc/openvpn/credentials.txt > /dev/null
+                  sudo chmod 600 /etc/openvpn/credentials.txt
 
             - name: Connect to VPN
               run: |
-                  sudo openvpn --config $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf --daemon
+                  sudo openvpn --config /etc/openvpn/surfshark.conf --daemon
                   sleep 15
               # Add additional loggingdsds
               env:
                   CI: true
 
             - name: Ensure VPN is connected
-              run: sudo cat $GITHUB_WORKSPACE/etc/openvpn/surfshark-status.log
+              run: sudo cat /etc/openvpn/surfshark-status.log
 
             - name: Set environment variables (again, after VPN connection)
               run: |
