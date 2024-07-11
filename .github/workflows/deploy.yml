@@ -43,18 +43,17 @@ jobs:
 
             - name: Install OpenVPN
               run: |
-                  sudo apt update
+                  sudo apt-get update
                   sudo apt install -y openvpn openvpn-systemd-resolved
 
             - name: Install dependencies
               run: |
-                  sudo apt-get update
                   sudo apt-get install python3-pip -y
                   pip3 install -r requirements.txt
 
             - name: Set up OpenVPN configuration
               run: |
-                  mkdir -p /etc/openvpn
+                  mkdir -p $GITHUB_WORKSPACE/openvpn
                   echo '
                   client
                   dev tun
@@ -70,7 +69,7 @@ jobs:
 
                   remote-cert-tls server
 
-                  auth-user-pass /etc/openvpn/credentials.txt
+                  auth-user-pass $GITHUB_WORKSPACE/openvpn/credentials.txt
 
                   #comp-lzo
                   verb 3
@@ -136,17 +135,17 @@ jobs:
                   134d3a3aa2f904512e85aa2dc2202498
                   -----END OpenVPN Static key V1-----
                   </tls-auth>
-                  ' > etc/openvpn/surfshark.conf
+                  ' > $GITHUB_WORKSPACE/openvpn/surfshark.conf
 
             - name: Add Surfshark credentials
               run: |
-                  echo "${{ secrets.SURFSHARK_PROXY_USERNAME }}" | sudo tee /etc/openvpn/credentials.txt > /dev/null
-                  echo "${{ secrets.SURFSHARK_PROXY_PASSWORD }}" | sudo tee -a /etc/openvpn/credentials.txt > /dev/null
-                  sudo chmod 600 /etc/openvpn/credentials.txt
+                  echo "${{ secrets.SURFSHARK_PROXY_USERNAME }}" | sudo tee $GITHUB_WORKSPACE/openvpn/credentials.txt > /dev/null
+                  echo "${{ secrets.SURFSHARK_PROXY_PASSWORD }}" | sudo tee -a $GITHUB_WORKSPACE/openvpn/credentials.txt > /dev/null
+                  sudo chmod 600 $GITHUB_WORKSPACE/openvpn/credentials.txt
 
             - name: Connect to VPN
               run: |
-                  sudo openvpn --config /etc/openvpn/surfshark.conf --daemon
+                  sudo openvpn --config $GITHUB_WORKSPACE/openvpn/surfshark.conf --daemon
                   sleep 15 # Wait for VPN connection to establish
 
             - name: Ensure VPN is connected
