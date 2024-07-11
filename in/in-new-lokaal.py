@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import pymongo
 import time
 import os
-import random
 
 # Load MongoDB URI from the environment variable
 mongo_uri = os.getenv('MONGO_URI')
@@ -23,24 +22,11 @@ except pymongo.errors.ConnectionError as e:
     print(f"Failed to connect to MongoDB. Error: {e}")
     raise
 
-# User-Agent rotation to mimic different browsers
-user_agents = [
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-    '(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-    '(KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
-    '(KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/605.1.15 '
-    '(KHTML, like Gecko) Version/14.0.3 Safari/605.1.15',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 '
-    '(KHTML, like Gecko) Version/13.1.2 Safari/605.1.15',
-]
-
 # Function to fetch article details
 def fetch_article_details(link):
     headers = {
-        'User-Agent': random.choice(user_agents)
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
     try:
         print(f"Fetching article details from {link}...")
