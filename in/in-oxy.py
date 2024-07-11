@@ -125,8 +125,8 @@ def run_script(rss_feed_url, num_articles, category):
     print(f"{count} RSS news articles have been saved to the 'news_rewrite.in' collection in MongoDB.")
 
 def main():
-    rss_feed_url = 'https://cointelegraph.com/rss'
-    num_articles = 3  # Set the desired number of articles to fetch
+    rss_feed_url = 'https://feeds.nos.nl/nosnieuwsalgemeen'
+    num_articles = 40  # Set the desired number of articles to fetch
     category = None  # Set the desired category if needed
 
     print("Starting the script...")
