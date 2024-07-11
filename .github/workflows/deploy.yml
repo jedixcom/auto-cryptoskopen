@@ -47,7 +47,7 @@ jobs:
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
 
-           - name: Run Python script
+            - name: Run Python script (in/in-new.py)
               run: python3 in/in-new.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
@@ -57,9 +57,9 @@ jobs:
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
                   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-                  FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }} 
+                  FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
 
-            - name: Run Python script
+            - name: Run Python script (rw/main.py)
               run: python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
