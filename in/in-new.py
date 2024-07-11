@@ -33,7 +33,7 @@ user_agents = [
 # Surfshark proxy details from environment variables
 surfshark_proxy_username = os.getenv('SURFSHARK_PROXY_USERNAME')
 surfshark_proxy_password = os.getenv('SURFSHARK_PROXY_PASSWORD')
-surfshark_proxy_url = "us-nyc.prod.surfshark.com:1443"
+surfshark_proxy_url = "us-nyc.prod.surfshark.com:443"
 
 proxies = {
     'http': f'http://{surfshark_proxy_username}:{surfshark_proxy_password}@{surfshark_proxy_url}',
@@ -50,7 +50,7 @@ def fetch_article_details(link):
     }
     try:
         logging.debug(f"Fetching article details from {link}")
-        response = requests.get(link, headers=headers, proxies=proxies)
+        response = requests.get(link, headers=headers, proxies=proxies, verify=False)
         if response.status_code == 200:
             logging.debug(f"Successfully fetched article details from {link}")
             full_text, image_url = extract_article_details(response.text)
@@ -59,7 +59,7 @@ def fetch_article_details(link):
             logging.warning(f"Access denied (403) for {link}. Retrying...")
             time.sleep(5)  # Wait before retrying
             headers['User-Agent'] = random.choice(user_agents)  # Change User-Agent
-            response = requests.get(link, headers=headers, proxies=proxies)
+            response = requests.get(link, headers=headers, proxies=proxies, verify=False)
             if response.status_code == 200:
                 logging.debug(f"Successfully fetched article details from {link} on retry")
                 full_text, image_url = extract_article_details(response.text)
