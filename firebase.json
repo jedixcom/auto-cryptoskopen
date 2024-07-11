@@ -1,6 +1,12 @@
 {
     "hosting": {
-        "public": "/",
-        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+        "public": "cryptoskopen-website", // Change this to the directory you want to deploy
+        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
     }
 }

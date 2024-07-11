@@ -2,6 +2,18 @@ auto-cryptoskopen-1-81e4c28d471e.json
 .env
 rw/.env
 firebase-key.json
+
+# Exclude Python executables and cache files
+**/bin/python3.12
+**/bin/python3
+**/bin/python
+**/*.pyc
+**/__pycache__/
+
+# Add any other files or directories to exclude from the deployment
+node_modules/
+*.log
+
 # Ignore all executable files
 **/*.pyc
 **/bin/**
