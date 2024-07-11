@@ -145,38 +145,6 @@ jobs:
                   echo "${{ secrets.SURFSHARK_PROXY_PASSWORD }}" | sudo tee -a /etc/openvpn/credentials.txt > /dev/null
                   sudo chmod 600 /etc/openvpn/credentials.txt
 
-            - name: Connect to VPN
-              run: |
-                  sudo openvpn --config /etc/openvpn/surfshark.conf --log /etc/openvpn/openvpn.log --daemon
-                  sleep 10 # Wait for VPN connection to establish
-                  sudo cat /etc/openvpn/openvpn.log
-
-            - name: Ensure VPN is connected
-              run: |
-                  ifconfig tun0 # Check if tun0 interface is up
-                  curl -s ifconfig.me # Check public IP address
-
-            - name: Fetch RSS Feed
-              uses: Promptly-Technologies-LLC/rss-fetch-action@v2
-              with:
-                  feed_url: 'https://cointelegraph.com/rss'
-                  file_path: './feed.json'
-                  parser_options: '{"useISODateFormat": false, "getExtraEntryFields": "(feedEntry) => { return { ''content:encoded'': feedEntry[''content:encoded''] || '''', ''full_text'': feedEntry[''full_text''] || '''', ''body'': feedEntry[''body''] || '''', ''image_url'': feedEntry[''image_url''] || '''', ''summary'': feedEntry[''summary''] || '''' }; }"}'
-                  fetch_options: '{}'
-
-            - name: Output feed.json contents
-              run: cat ./feed.json
-
-            - name: Pretty-print feed.json
-              run: jq . ./feed.json
-
-            - name: Extract full articles and save to MongoDB
-              run: python3 rw/feed-extractor.py
-              env:
-                  MONGO_URI: ${{ secrets.MONGO_URI }}
-                  SURFSHARK_PROXY_USERNAME: ${{ secrets.SURFSHARK_PROXY_USERNAME }}
-                  SURFSHARK_PROXY_PASSWORD: ${{ secrets.SURFSHARK_PROXY_PASSWORD }}
-
             - name: Run Python script in/in-new.py
               run: |
                   python3 in/in-new.py
