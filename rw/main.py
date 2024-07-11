@@ -39,7 +39,6 @@ print(f"MONGO_URI: {mongo_uri}")
 if not all([bucket_name, base_dir, google_application_credentials_base64, domain_name, openai_api_key, mongo_uri]):
     raise ValueError("One or more required environment variables are not set.")
 
-# Decode the base64-encoded Google application credentials
 google_application_credentials_path = os.path.join(base_dir, 'firebase-key.json')
 with open(google_application_credentials_path, 'wb') as f:
     f.write(base64.b64decode(google_application_credentials_base64))
@@ -118,6 +117,7 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
 
 def main():
     try:
+        domain_name = 'https://auto-cryptoskopen-1.web.app/'
         print(f"Domain name set to: {domain_name}")
 
         create_directories_and_files(base_dir)
