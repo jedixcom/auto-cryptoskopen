@@ -163,13 +163,19 @@ jobs:
                   file_path: './feed.json'
                   parser_options: '{"useISODateFormat": false, "getExtraEntryFields": "(feedEntry) => { return { ''content:encoded'': feedEntry[''content:encoded''] || '''' }; }"}'
                   fetch_options: '{}'
-                  remove_published: false
 
             - name: Output feed.json contents
               run: cat ./feed.json
 
             - name: Pretty-print feed.json
               run: jq . ./feed.json
+
+            - name: Extract full articles and save to MongoDB
+              run: python3 feed-extractor.py
+              env:
+                  MONGO_URI: ${{ secrets.MONGO_URI }}
+                  SURFSHARK_PROXY_USERNAME: ${{ secrets.SURFSHARK_PROXY_USERNAME }}
+                  SURFSHARK_PROXY_PASSWORD: ${{ secrets.SURFSHARK_PROXY_PASSWORD }}
 
             - name: Run Python script in/in-new.py
               run: |
