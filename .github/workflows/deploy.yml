@@ -147,8 +147,9 @@ jobs:
 
             - name: Connect to VPN
               run: |
-                  sudo openvpn --config /etc/openvpn/surfshark.conf --daemon
+                  sudo openvpn --config /etc/openvpn/surfshark.conf --log /etc/openvpn/openvpn.log --daemon
                   sleep 15 # Wait for VPN connection to establish
+                  sudo cat /etc/openvpn/openvpn.log
 
             - name: Ensure VPN is connected
               run: |
@@ -163,6 +164,12 @@ jobs:
                   parser_options: '{"useISODateFormat": false, "getExtraEntryFields": "(feedEntry) => { return { ''content:encoded'': feedEntry[''content:encoded''] || '''' }; }"}'
                   fetch_options: '{}'
                   remove_published: false
+
+            - name: Output feed.json contents
+              run: cat ./feed.json
+
+            - name: Pretty-print feed.json
+              run: jq . ./feed.json
 
             - name: Run Python script in/in-new.py
               run: |
