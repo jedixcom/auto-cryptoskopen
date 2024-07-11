@@ -39,7 +39,7 @@ print(f"MONGO_URI: {mongo_uri}")
 if not all([bucket_name, base_dir, google_application_credentials_base64, domain_name, openai_api_key, mongo_uri]):
     raise ValueError("One or more required environment variables are not set.")
 
-google_application_credentials_path = os.path.join(base_dir, 'cryptoskopen-website', 'firebase-key.json')
+google_application_credentials_path = os.path.join(base_dir, 'firebase-key.json')
 
 # Ensure the directory for the firebase key exists
 os.makedirs(os.path.dirname(google_application_credentials_path), exist_ok=True)
