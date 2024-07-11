@@ -41,7 +41,7 @@ jobs:
               with:
                   node-version: '22' # Adjust this to your desired Node.js version
 
-            - name: Install dependencies
+            - name: Install NPM dependencies
               run: npm install firebase-tools@13.13.1
 
             - name: Ensure BASE_DIR exists
