@@ -22,7 +22,7 @@ output_collection = db["rw"]
 
 def fetch_article_details(link):
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
     }
     proxies = {
         # Replace with your proxy settings if needed
@@ -36,6 +36,17 @@ def fetch_article_details(link):
             logging.debug(f"Successfully fetched article details from {link}")
             full_text, image_url = extract_article_details(response.text)
             return full_text, image_url
+        elif response.status_code == 403:
+            logging.warning(f"Access denied (403) for {link}. Retrying...")
+            time.sleep(5)  # Wait before retrying
+            response = requests.get(link, headers=headers, proxies=proxies)
+            if response.status_code == 200:
+                logging.debug(f"Successfully fetched article details from {link} on retry")
+                full_text, image_url = extract_article_details(response.text)
+                return full_text, image_url
+            else:
+                logging.warning(f"Failed to fetch article details from {link}. Status code: {response.status_code}")
+                return None, None
         else:
             logging.warning(f"Failed to fetch article details from {link}. Status code: {response.status_code}")
             return None, None
@@ -116,7 +127,7 @@ def run_script(rss_feed_url, num_articles, category):
 
 def main():
     rss_feed_url = 'https://cointelegraph.com/rss'
-    num_articles = 3
+    num_articles = 1
     category = None
 
     run_script(rss_feed_url, num_articles, category)
