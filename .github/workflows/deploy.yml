@@ -138,7 +138,7 @@ jobs:
               run: |
                   sudo openvpn --config $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf --daemon
                   sleep 15
-              # Add additional logging
+              # Add additional loggingdsds
               env:
                   CI: true
 
