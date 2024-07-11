@@ -148,9 +148,10 @@ jobs:
             - name: Connect to VPN
               run: |
                   sudo openvpn --config /etc/openvpn/surfshark.conf --log /etc/openvpn/openvpn.log --daemon
+                  sleep 10 # Wait for VPN connection to establish
                   sudo cat /etc/openvpn/openvpn.log
 
-            - name: Verify VPN connection
+            - name: Ensure VPN is connected
               run: |
                   ifconfig tun0 # Check if tun0 interface is up
                   curl -s ifconfig.me # Check public IP address
