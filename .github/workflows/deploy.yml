@@ -50,4 +50,4 @@ jobs:
                   channelId: live
                   projectId: auto-cryptoskopen-1
                   expires: 7d
-                  entryPoint: cryptoskopen-website
+                  entryPoint: /
