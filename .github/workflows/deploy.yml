@@ -27,6 +27,9 @@ jobs:
                   echo "SURFSHARK_PROXY_USERNAME=${{ secrets.SURFSHARK_PROXY_USERNAME }}" >> $GITHUB_ENV
                   echo "SURFSHARK_PROXY_PASSWORD=${{ secrets.SURFSHARK_PROXY_PASSWORD }}" >> $GITHUB_ENV
 
+            - name: Ensure BASE_DIR exists
+              run: mkdir -p ${{ secrets.BASE_DIR }}
+
             - name: Decode Firebase service account key
               run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/firebase-key.json
 
@@ -41,14 +44,13 @@ jobs:
             - name: Install NPM dependencies
               run: npm install -g firebase-tools@13.13.1 # Install globally for firebase command access
 
-            - name: Install OpenVPN
+            - name: Apt-Get Install
               run: |
                   sudo apt-get update
-                  sudo apt install -y openvpn openvpn-systemd-resolved resolvconf easy-rsa
+                  sudo apt install -y openvpn openvpn-systemd-resolved resolvconf easy-rsa python3-pip
 
-            - name: Install dependencies
+            - name: Install PIP packets
               run: |
-                  sudo apt-get install python3-pip -y
                   pip3 install -r requirements.txt
 
             - name: Set up OpenVPN configuration
@@ -153,8 +155,14 @@ jobs:
                   ifconfig tun0 # Check if tun0 interface is up
                   curl -s ifconfig.me # Check public IP address
 
-            - name: Ensure BASE_DIR exists
-              run: mkdir -p ${{ secrets.BASE_DIR }}
+            - name: Fetch RSS Feed
+              uses: Promptly-Technologies-LLC/rss-fetch-action@v2
+              with:
+                  feed_url: 'https://cointelegraph.com/rss'
+                  file_path: './feed.json'
+                  parser_options: '{"useISODateFormat": false, "getExtraEntryFields": "(feedEntry) => { return { ''content:encoded'': feedEntry[''content:encoded''] || '''' }; }"}'
+              fetch_options: '{}'
+              remove_published: false
 
             - name: Run Python script in/in-new.py
               run: |
