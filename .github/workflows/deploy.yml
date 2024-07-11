@@ -136,7 +136,7 @@ jobs:
                   134d3a3aa2f904512e85aa2dc2202498
                   -----END OpenVPN Static key V1-----
                   </tls-auth>
-                  ' > /etc/openvpn/surfshark.conf
+                  ' > etc/openvpn/surfshark.conf
 
             - name: Add Surfshark credentials
               run: |
