@@ -29,7 +29,7 @@ jobs:
               run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/firebase-key.json
 
             - name: Decode Google service account key
-              run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > $GITHUB_WORKSPACE/${{ secrets.BASE_DIR }}/firebase-key.json
+              run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > $GITHUB_WORKSPACE/cryptoskopen-website/firebase-key.json
 
             - name: Install dependencies
               run: |
@@ -39,14 +39,6 @@ jobs:
 
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
-
-            - name: Ensure firebase.json exists
-              run: |
-                  ls -la ${{ secrets.BASE_DIR }}
-                  if [ ! -f ${{ secrets.BASE_DIR }}/firebase.json ]; then
-                    echo "firebase.json file not found in BASE_DIR"
-                    exit 1
-                  fi
 
             - name: Run Python script
               run: python3 rw/main.py
