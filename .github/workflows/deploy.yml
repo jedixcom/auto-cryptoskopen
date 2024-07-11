@@ -145,6 +145,16 @@ jobs:
                   echo "${{ secrets.SURFSHARK_PROXY_PASSWORD }}" | sudo tee -a /etc/openvpn/credentials.txt > /dev/null
                   sudo chmod 600 /etc/openvpn/credentials.txt
 
+            - name: Connect to VPN
+              run: |
+                  sudo openvpn --config /etc/openvpn/surfshark.conf --log /etc/openvpn/openvpn.log --daemon
+                  sudo cat /etc/openvpn/openvpn.log
+
+            - name: Ensure VPN is connected
+              run: |
+                  ifconfig tun0 # Check if tun0 interface is up
+                  curl -s ifconfig.me # Check public IP address
+
             - name: Fetch RSS Feed
               uses: Promptly-Technologies-LLC/rss-fetch-action@v2
               with:
