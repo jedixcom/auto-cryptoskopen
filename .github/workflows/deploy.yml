@@ -33,6 +33,14 @@ jobs:
             - name: Decode Google service account key
               run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/google-credentials.json
 
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '22' # Adjust to your desired Node.js version
+
+            - name: Install NPM dependencies
+              run: npm install -g firebase-tools@13.13.1 # Install globally for firebase command access
+
             - name: Install OpenVPN
               run: |
                   sudo apt update
@@ -51,7 +59,7 @@ jobs:
                   client
                   dev tun
                   proto tcp
-                  remote de-fra.prod.surfshark.com 1443
+                  remote de-fra.prod.surfshark.com 443
                   remote-random
                   nobind
                   tun-mtu 1500
@@ -145,14 +153,6 @@ jobs:
               run: |
                   ifconfig tun0 # Check if tun0 interface is up
                   curl -s ifconfig.me # Check public IP address
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '22' # Adjust to your desired Node.js version
-
-            - name: Install NPM dependencies
-              run: npm install -g firebase-tools@13.13.1 # Install globally for firebase command access
 
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
