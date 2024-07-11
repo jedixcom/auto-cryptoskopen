@@ -121,8 +121,12 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
 
 def cleanup():
     """Remove sensitive files after use."""
-    print("Temporary Google application credentials file removed.")
-     
+    try:
+        if os.path.exists(google_application_credentials_path):
+            os.remove(google_application_credentials_path)
+            print("Temporary Google application credentials file removed.")
+    except Exception as e:
+        print(f"Error during cleanup: {e}")
 
 def main():
     try:
@@ -179,7 +183,8 @@ def main():
     except Exception as e:
         print(f"Error in main: {e}")
     finally:
-        cleanup()
+        # Do not remove the temporary Google application credentials file
+        print("Cleanup completed, temporary Google application credentials file not removed.")
 
 if __name__ == "__main__":
     print("Starting the article rewriter script...")
