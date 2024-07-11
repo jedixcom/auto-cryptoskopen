@@ -142,7 +142,7 @@ jobs:
               run: |
                   echo "${{ secrets.SURFSHARK_PROXY_USERNAME }}" | sudo tee /etc/openvpn/credentials.txt > /dev/null
                   echo "${{ secrets.SURFSHARK_PROXY_PASSWORD }}" | sudo tee -a /etc/openvpn/credentials.txt > /dev/null
-                  sudo chmod 777 /etc/openvpn/credentials.txt
+                  sudo chmod 600 /etc/openvpn/credentials.txt
 
             - name: Connect to VPN
               run: |
