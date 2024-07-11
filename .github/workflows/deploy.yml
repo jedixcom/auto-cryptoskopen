@@ -53,12 +53,12 @@ jobs:
 
             - name: Set up OpenVPN configuration
               run: |
-                  mkdir -p $GITHUB_WORKSPACE/openvpn
+                  mkdir -p $GITHUB_WORKSPAC/openvpn
                   echo '
                   client
                   dev tun
                   proto tcp
-                  remote us-sfo.prod.surfshark.com 1443
+                  remote de-fra.prod.surfshark.com 1443
                   remote-random
                   nobind
                   tun-mtu 1500
@@ -69,7 +69,7 @@ jobs:
 
                   remote-cert-tls server
 
-                  auth-user-pass $GITHUB_WORKSPACE/openvpn/credentials.txt
+                  auth-user-pass $GITHUB_WORKSPAC/openvpn/credentials.txt
 
                   #comp-lzo
                   verb 3
@@ -135,7 +135,7 @@ jobs:
                   134d3a3aa2f904512e85aa2dc2202498
                   -----END OpenVPN Static key V1-----
                   </tls-auth>
-                  ' > $GITHUB_WORKSPACE/openvpn/surfshark.conf
+                  ' | sudo tee $GITHUB_WORKSPAC/openvpn/surfshark.conf > /dev/null
 
             - name: Add Surfshark credentials
               run: |
