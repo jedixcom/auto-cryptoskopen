@@ -49,5 +49,13 @@ jobs:
                   FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
 
             - name: Deploy to Firebase
-              run: firebase deploy --only hosting --project auto-cryptoskopen-1 --token "${{ secrets.FIREBASE_TOKEN }}"
-              working-directory: $GITHUB_WORKSPACE/cryptoskopen-website
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+            repoToken: ${{ secrets.GITHUB_TOKEN }}
+            firebaseServiceAccount: ${{ github.workspace }}/firebase-key.json
+            channelId: live
+            projectId: auto-cryptoskopen-1
+            expires: 7d
+            entryPoint: ${{ secrets.BASE_DIR }}
+        env:
+            FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
