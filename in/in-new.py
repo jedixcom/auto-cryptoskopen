@@ -37,14 +37,19 @@ user_agents = [
 ]
 
 # Surfshark proxy details (hardcoded for testing)
-surfshark_proxy_url = "nl-ams.prod.surfshark.com:443"
+proxies = [
+    "nl-ams.prod.surfshark.com:443",
+    "us-bos.prod.surfshark.com:443"
+]
 surfshark_proxy_username = "kNtgW7qrS5rJJkbQagsFHT76"
 surfshark_proxy_password = "qGnBxqVhLheQPpdCwzSMPyHj"
 
-proxies = {
-    'http': f'http://{surfshark_proxy_username}:{surfshark_proxy_password}@{surfshark_proxy_url}',
-    'https': f'https://{surfshark_proxy_username}:{surfshark_proxy_password}@{surfshark_proxy_url}',
-}
+def get_proxies():
+    proxy_url = random.choice(proxies)
+    return {
+        'http': f'http://{surfshark_proxy_username}:{surfshark_proxy_password}@{proxy_url}',
+        'https': f'https://{surfshark_proxy_username}:{surfshark_proxy_password}@{proxy_url}',
+    }
 
 def fetch_article_details(link):
     headers = {
@@ -58,8 +63,9 @@ def fetch_article_details(link):
         'Upgrade-Insecure-Requests': '1'
     }
     try:
-        logging.debug(f"Fetching article details from {link} using proxy {surfshark_proxy_url}")
-        response = requests.get(link, headers=headers, proxies=proxies)
+        proxy = get_proxies()
+        logging.debug(f"Fetching article details from {link} using proxy {proxy}")
+        response = requests.get(link, headers=headers, proxies=proxy, verify=True)
         logging.debug(f"HTTP response status code: {response.status_code}")
 
         if response.status_code == 200:
@@ -67,10 +73,11 @@ def fetch_article_details(link):
             full_text, image_url = extract_article_details(response.text)
             return full_text, image_url
         elif response.status_code == 403:
-            logging.warning(f"Access denied (403) for {link}. Retrying...")
+            logging.warning(f"Access denied (403) for {link}. Retrying with a different proxy...")
             time.sleep(5)  # Wait before retrying
             headers['User-Agent'] = random.choice(user_agents)  # Change User-Agent
-            response = requests.get(link, headers=headers, proxies=proxies)
+            proxy = get_proxies()
+            response = requests.get(link, headers=headers, proxies=proxy, verify=True)
             logging.debug(f"HTTP response status code on retry: {response.status_code}")
             if response.status_code == 200:
                 logging.debug(f"Successfully fetched article details from {link} on retry")
