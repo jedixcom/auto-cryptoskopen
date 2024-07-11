@@ -37,12 +37,18 @@ def fetch_article_details(link, max_retries=3, timeout=30):
                       '(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
     proxies = {
-        'http': f'http://{proxy_auth}@pr.oxylabs.io:7777',
-        'https': f'http://{proxy_auth}@pr.oxylabs.io:7777'
+        'http': f'http://customer-jedixcom_wRLl9:389Hoi123OXL@us-pr.oxylabs.io:10000',
+        'https': f'https://customer-jedixcom_wRLl9:389Hoi123OXL@us-pr.oxylabs.io:10000'
     }
     retries = 0
     while retries < max_retries:
         try:
+            # Verify the IP address used by the proxy
+            ip_check_url = 'http://httpbin.org/ip'
+            print(f"Checking outgoing IP address using proxy {proxies['http']}...")
+            ip_response = requests.get(ip_check_url, headers=headers, proxies=proxies, timeout=timeout)
+            print(f"Outgoing IP address: {ip_response.json()}")
+
             print(f"Fetching article details from {link} (Attempt {retries + 1}/{max_retries}) using proxy {proxies['http']}...")
             response = requests.get(link, headers=headers, proxies=proxies, timeout=timeout)
             if response.status_code == 200:
