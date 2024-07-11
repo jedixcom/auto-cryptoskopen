@@ -166,7 +166,7 @@ def run_script(rss_feed_url, num_articles, category):
 
 def main():
     rss_feed_url = 'https://cointelegraph.com/rss'
-    num_articles = 1
+    num_articles = 3
     category = None
 
     run_script(rss_feed_url, num_articles, category)
