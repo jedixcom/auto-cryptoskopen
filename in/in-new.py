@@ -9,17 +9,23 @@ import logging
 import random
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # MongoDB connection setup
 mongo_uri = os.getenv('MONGO_URI')
 if not mongo_uri:
     raise EnvironmentError("Missing environment variable MONGO_URI")
 
-client = pymongo.MongoClient(mongo_uri)
-db = client["cryptoskopen-eu"]
-input_collection = db["in"]
-output_collection = db["rw"]
+logging.debug(f"Attempting to connect to MongoDB with URI: {mongo_uri}")
+try:
+    client = pymongo.MongoClient(mongo_uri)
+    db = client["cryptoskopen-eu"]
+    input_collection = db["in"]
+    output_collection = db["rw"]
+    logging.debug("MongoDB connection successful")
+except pymongo.errors.ConnectionError as e:
+    logging.error(f"MongoDB connection failed: {e}")
+    raise
 
 # User-Agent rotation
 user_agents = [
@@ -30,10 +36,10 @@ user_agents = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15',
 ]
 
-# Surfshark proxy details from environment variables
-surfshark_proxy_username = os.getenv('SURFSHARK_PROXY_USERNAME')
-surfshark_proxy_password = os.getenv('SURFSHARK_PROXY_PASSWORD')
-surfshark_proxy_url = "us-nyc.prod.surfshark.com:443"
+# Surfshark proxy details (hardcoded for testing)
+surfshark_proxy_url = "nl-ams.prod.surfshark.com:443"
+surfshark_proxy_username = "kNtgW7qrS5rJJkbQagsFHT76"
+surfshark_proxy_password = "qGnBxqVhLheQPpdCwzSMPyHj"
 
 proxies = {
     'http': f'http://{surfshark_proxy_username}:{surfshark_proxy_password}@{surfshark_proxy_url}',
@@ -46,11 +52,16 @@ def fetch_article_details(link):
         'Accept-Language': 'en-US,en;q=0.9',
         'Connection': 'keep-alive',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, br'
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Referer': 'https://cointelegraph.com/',
+        'DNT': '1',
+        'Upgrade-Insecure-Requests': '1'
     }
     try:
-        logging.debug(f"Fetching article details from {link}")
-        response = requests.get(link, headers=headers, proxies=proxies, verify=False)
+        logging.debug(f"Fetching article details from {link} using proxy {surfshark_proxy_url}")
+        response = requests.get(link, headers=headers, proxies=proxies)
+        logging.debug(f"HTTP response status code: {response.status_code}")
+
         if response.status_code == 200:
             logging.debug(f"Successfully fetched article details from {link}")
             full_text, image_url = extract_article_details(response.text)
@@ -59,7 +70,8 @@ def fetch_article_details(link):
             logging.warning(f"Access denied (403) for {link}. Retrying...")
             time.sleep(5)  # Wait before retrying
             headers['User-Agent'] = random.choice(user_agents)  # Change User-Agent
-            response = requests.get(link, headers=headers, proxies=proxies, verify=False)
+            response = requests.get(link, headers=headers, proxies=proxies)
+            logging.debug(f"HTTP response status code on retry: {response.status_code}")
             if response.status_code == 200:
                 logging.debug(f"Successfully fetched article details from {link} on retry")
                 full_text, image_url = extract_article_details(response.text)
@@ -147,7 +159,7 @@ def run_script(rss_feed_url, num_articles, category):
 
 def main():
     rss_feed_url = 'https://cointelegraph.com/rss'
-    num_articles = 1
+    num_articles = 3
     category = None
 
     run_script(rss_feed_url, num_articles, category)
