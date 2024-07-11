@@ -18,12 +18,16 @@ jobs:
               run: |
                   echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> $GITHUB_ENV
                   echo "BASE_DIR=${{ secrets.BASE_DIR }}" >> $GITHUB_ENV
+                  echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> $GITHUB_ENV
                   echo "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}" >> $GITHUB_ENV
                   echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
                   echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
 
             - name: Decode Firebase service account key
               run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/firebase-key.json
+
+            - name: Decode Google service account key
+              run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > $GITHUB_WORKSPACE/cryptoskopen-website/firebase-key.json
 
             - name: Install dependencies
               run: |
@@ -35,15 +39,15 @@ jobs:
               run: python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-                  BASE_DIR: ${{ github.workspace }}/cryptoskopen-website
-                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firebase-key.json
+                  BASE_DIR: ${{ secrets.BASE_DIR }}
+                  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
                   DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
 
-            - name: Deploy to Firebase
+             - name: Deploy to Firebase
               run: |
-                  npm install -g firebase-tools
-                  firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}"
+                npm install -g firebase-tools
+                firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}"
               env:
-                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firebase-key.json
+                GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firebase-key.json
