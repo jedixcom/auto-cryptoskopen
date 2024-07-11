@@ -6,6 +6,7 @@ import time
 import os
 from datetime import datetime, timezone
 import logging
+import random
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -20,9 +21,22 @@ db = client["cryptoskopen-eu"]
 input_collection = db["in"]
 output_collection = db["rw"]
 
+# User-Agent rotation
+user_agents = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15',
+]
+
 def fetch_article_details(link):
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
+        'User-Agent': random.choice(user_agents),
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Connection': 'keep-alive',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br'
     }
     proxies = {
         # Replace with your proxy settings if needed
@@ -39,6 +53,7 @@ def fetch_article_details(link):
         elif response.status_code == 403:
             logging.warning(f"Access denied (403) for {link}. Retrying...")
             time.sleep(5)  # Wait before retrying
+            headers['User-Agent'] = random.choice(user_agents)  # Change User-Agent
             response = requests.get(link, headers=headers, proxies=proxies)
             if response.status_code == 200:
                 logging.debug(f"Successfully fetched article details from {link} on retry")
