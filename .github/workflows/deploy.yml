@@ -54,7 +54,7 @@ jobs:
 
             - name: Set up OpenVPN configuration
               run: |
-                  mkdir -p /etc/openvpn
+                  mkdir -p $GITHUB_WORKSPACE/openvpn
                   echo '
                   client
                   dev tun
@@ -70,7 +70,7 @@ jobs:
 
                   remote-cert-tls server
 
-                  auth-user-pass
+                  auth-user-pass $GITHUB_WORKSPACE/openvpn/credentials.txt
 
                   #comp-lzo
                   verb 3
@@ -136,7 +136,7 @@ jobs:
                   134d3a3aa2f904512e85aa2dc2202498
                   -----END OpenVPN Static key V1-----
                   </tls-auth>
-                  ' | sudo tee /etc/openvpn/surfshark.conf > /dev/null
+                  ' > $GITHUB_WORKSPACE/openvpn/surfshark.conf
 
             - name: Add Surfshark credentials
               run: |
@@ -146,10 +146,10 @@ jobs:
 
             - name: Connect to VPN
               run: |
-                  sudo openvpn --config /etc/openvpn/surfshark.conf --daemon
+                  sudo openvpn --config $GITHUB_WORKSPACE/openvpn/surfshark.conf --daemon
                   sleep 15 # Wait for VPN connection to establish
 
-            - name: Verify VPN connection
+            - name: Ensure VPN is connected
               run: |
                   ifconfig tun0 # Check if tun0 interface is up
                   curl -s ifconfig.me # Check public IP address
