@@ -157,9 +157,19 @@ jobs:
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
 
-            - name: Run Python scripts
+            - name: Run Python script in/in-new.py
               run: |
                   python3 in/in-new.py
+              env:
+                  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+                  BASE_DIR: ${{ secrets.BASE_DIR }}
+                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
+                  DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
+                  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+                  MONGO_URI: ${{ secrets.MONGO_URI }}
+
+            - name: Run Python script rw/main.py
+              run: |
                   python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
