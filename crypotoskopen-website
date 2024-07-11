@@ -1,0 +1,6 @@
+BUCKET_NAME=auto-cryptoskopen-1.appspot.com
+BASE_DIR=/Users/_akira/hacker/auto/
+GOOGLE_APPLICATION_CREDENTIALS=/Users/_akira/hacker/auto/firebase-key.json.base64
+OPENAI_API_KEY=sk-proj-r0Ly4atcz2levO4FG34RT3BlbkFJ16QUGkQUSddOVXt4jnE6
+MONGO_URI=mongodb+srv://uas1:3890Hoi123@cluster0.elk3l4f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+DOMAIN_NAME=https://auto-cryptoskopen-1.web.app/
