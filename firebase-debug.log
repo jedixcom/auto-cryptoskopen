@@ -1,0 +1,126 @@
+[debug] [2024-07-11T00:40:00.412Z] ----------------------------------------------------------------------
+[debug] [2024-07-11T00:40:00.413Z] Command:       /opt/homebrew/Cellar/node@18/18.20.4/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2024-07-11T00:40:00.414Z] CLI Version:   13.13.1
+[debug] [2024-07-11T00:40:00.414Z] Platform:      darwin
+[debug] [2024-07-11T00:40:00.414Z] Node Version:  v18.20.4
+[debug] [2024-07-11T00:40:00.414Z] Time:          Thu Jul 11 2024 02:40:00 GMT+0200 (Central European Summer Time)
+[debug] [2024-07-11T00:40:00.415Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-07-11T00:40:00.450Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-07-11T00:40:00.450Z] > authorizing via signed-in user (admin@universityappliedsciences.com)
+[debug] [2024-07-11T00:40:00.450Z] [iam] checking project auto-cryptokopen-eu-website for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-07-11T00:40:00.451Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions [none]
+[debug] [2024-07-11T00:40:00.451Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions x-goog-quota-user=projects/auto-cryptokopen-eu-website
+[debug] [2024-07-11T00:40:00.451Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-07-11T00:40:01.195Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions 200
+[debug] [2024-07-11T00:40:01.196Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-07-11T00:40:01.197Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website [none]
+[debug] [2024-07-11T00:40:01.593Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website 200
+[debug] [2024-07-11T00:40:01.593Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website {"projectId":"auto-cryptokopen-eu-website","projectNumber":"605280185446","displayName":"auto-cryptokopen-eu-website","name":"projects/auto-cryptokopen-eu-website","resources":{"hostingSite":"auto-cryptokopen-eu-website"},"state":"ACTIVE","etag":"1_9e331730-bcef-47d0-b9f6-a0d76748fa62"}
+[debug] [2024-07-11T00:40:01.595Z] Specified "public" directory "./cryptoskopen-website" does not exist; Deploy to Hosting site "auto-cryptokopen-eu-website" may fail or be empty.
+[info] 
+[info] === Deploying to 'auto-cryptokopen-eu-website'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2024-07-11T00:40:01.600Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions [none]
+[debug] [2024-07-11T00:40:01.600Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2024-07-11T00:40:03.133Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions 500
+[debug] [2024-07-11T00:40:03.133Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions {"error":{"code":500,"message":"Internal error encountered.","status":"INTERNAL"}}
+[error] 
+[error] Error: HTTP Error: 500, Internal error encountered.
+[debug] [2024-07-11T00:40:03.212Z] Error Context: {
+  "body": {
+    "error": {
+      "code": 500,
+      "message": "Internal error encountered.",
+      "status": "INTERNAL"
+    }
+  },
+  "response": {
+    "statusCode": 500
+  }
+}
+[debug] [2024-07-11T00:41:00.326Z] ----------------------------------------------------------------------
+[debug] [2024-07-11T00:41:00.327Z] Command:       /opt/homebrew/Cellar/node@18/18.20.4/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2024-07-11T00:41:00.327Z] CLI Version:   13.13.1
+[debug] [2024-07-11T00:41:00.327Z] Platform:      darwin
+[debug] [2024-07-11T00:41:00.328Z] Node Version:  v18.20.4
+[debug] [2024-07-11T00:41:00.334Z] Time:          Thu Jul 11 2024 02:41:00 GMT+0200 (Central European Summer Time)
+[debug] [2024-07-11T00:41:00.334Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-07-11T00:41:00.370Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-07-11T00:41:00.370Z] > authorizing via signed-in user (admin@universityappliedsciences.com)
+[debug] [2024-07-11T00:41:00.370Z] [iam] checking project auto-cryptokopen-eu-website for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-07-11T00:41:00.372Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions [none]
+[debug] [2024-07-11T00:41:00.372Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions x-goog-quota-user=projects/auto-cryptokopen-eu-website
+[debug] [2024-07-11T00:41:00.372Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-07-11T00:41:01.205Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions 200
+[debug] [2024-07-11T00:41:01.205Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-07-11T00:41:01.206Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website [none]
+[debug] [2024-07-11T00:41:01.603Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website 200
+[debug] [2024-07-11T00:41:01.604Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website {"projectId":"auto-cryptokopen-eu-website","projectNumber":"605280185446","displayName":"auto-cryptokopen-eu-website","name":"projects/auto-cryptokopen-eu-website","resources":{"hostingSite":"auto-cryptokopen-eu-website"},"state":"ACTIVE","etag":"1_9e331730-bcef-47d0-b9f6-a0d76748fa62"}
+[debug] [2024-07-11T00:41:01.606Z] Specified "public" directory "./cryptoskopen-website" does not exist; Deploy to Hosting site "auto-cryptokopen-eu-website" may fail or be empty.
+[info] 
+[info] === Deploying to 'auto-cryptokopen-eu-website'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2024-07-11T00:41:01.614Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions [none]
+[debug] [2024-07-11T00:41:01.614Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2024-07-11T00:41:03.140Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions 500
+[debug] [2024-07-11T00:41:03.140Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions {"error":{"code":500,"message":"Internal error encountered.","status":"INTERNAL"}}
+[error] 
+[error] Error: HTTP Error: 500, Internal error encountered.
+[debug] [2024-07-11T00:41:03.221Z] Error Context: {
+  "body": {
+    "error": {
+      "code": 500,
+      "message": "Internal error encountered.",
+      "status": "INTERNAL"
+    }
+  },
+  "response": {
+    "statusCode": 500
+  }
+}
+[debug] [2024-07-11T00:41:51.280Z] ----------------------------------------------------------------------
+[debug] [2024-07-11T00:41:51.281Z] Command:       /opt/homebrew/Cellar/node@18/18.20.4/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2024-07-11T00:41:51.281Z] CLI Version:   13.13.1
+[debug] [2024-07-11T00:41:51.282Z] Platform:      darwin
+[debug] [2024-07-11T00:41:51.282Z] Node Version:  v18.20.4
+[debug] [2024-07-11T00:41:51.282Z] Time:          Thu Jul 11 2024 02:41:51 GMT+0200 (Central European Summer Time)
+[debug] [2024-07-11T00:41:51.282Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-07-11T00:41:51.318Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-07-11T00:41:51.318Z] > authorizing via signed-in user (admin@universityappliedsciences.com)
+[debug] [2024-07-11T00:41:51.319Z] [iam] checking project auto-cryptokopen-eu-website for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-07-11T00:41:51.320Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions [none]
+[debug] [2024-07-11T00:41:51.320Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions x-goog-quota-user=projects/auto-cryptokopen-eu-website
+[debug] [2024-07-11T00:41:51.320Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-07-11T00:41:52.093Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions 200
+[debug] [2024-07-11T00:41:52.093Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/auto-cryptokopen-eu-website:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-07-11T00:41:52.094Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website [none]
+[debug] [2024-07-11T00:41:52.334Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website 200
+[debug] [2024-07-11T00:41:52.334Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/auto-cryptokopen-eu-website {"projectId":"auto-cryptokopen-eu-website","projectNumber":"605280185446","displayName":"auto-cryptokopen-eu-website","name":"projects/auto-cryptokopen-eu-website","resources":{"hostingSite":"auto-cryptokopen-eu-website"},"state":"ACTIVE","etag":"1_9e331730-bcef-47d0-b9f6-a0d76748fa62"}
+[debug] [2024-07-11T00:41:52.336Z] Specified "public" directory "./cryptoskopen-website" does not exist; Deploy to Hosting site "auto-cryptokopen-eu-website" may fail or be empty.
+[info] 
+[info] === Deploying to 'auto-cryptokopen-eu-website'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2024-07-11T00:41:52.342Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions [none]
+[debug] [2024-07-11T00:41:52.342Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2024-07-11T00:41:53.961Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions 500
+[debug] [2024-07-11T00:41:53.961Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/auto-cryptokopen-eu-website/versions {"error":{"code":500,"message":"Internal error encountered.","status":"INTERNAL"}}
+[error] 
+[error] Error: HTTP Error: 500, Internal error encountered.
+[debug] [2024-07-11T00:41:54.043Z] Error Context: {
+  "body": {
+    "error": {
+      "code": 500,
+      "message": "Internal error encountered.",
+      "status": "INTERNAL"
+    }
+  },
+  "response": {
+    "statusCode": 500
+  }
+}
