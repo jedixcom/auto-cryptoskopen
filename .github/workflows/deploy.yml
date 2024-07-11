@@ -32,7 +32,9 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y python3-pip
                   pip3 install -r requirements.txt
-                  npm install -g firebase-tools@13.13.1
+
+            - name: Install Firebase CLI
+              run: npm install -g firebase-tools@latest
 
             - name: Run Python script
               run: python3 rw/main.py
@@ -48,3 +50,4 @@ jobs:
 
             - name: Deploy to Firebase
               run: firebase deploy --only hosting --project auto-cryptoskopen-1 --token "${{ secrets.FIREBASE_TOKEN }}"
+              working-directory: $GITHUB_WORKSPACE/cryptoskopen-website
