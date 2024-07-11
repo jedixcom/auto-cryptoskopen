@@ -30,6 +30,16 @@ user_agents = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15',
 ]
 
+# Surfshark proxy details from environment variables
+surfshark_proxy_username = os.getenv('SURFSHARK_PROXY_USERNAME')
+surfshark_proxy_password = os.getenv('SURFSHARK_PROXY_PASSWORD')
+surfshark_proxy_url = "us-nyc.prod.surfshark.com:1443"
+
+proxies = {
+    'http': f'http://{surfshark_proxy_username}:{surfshark_proxy_password}@{surfshark_proxy_url}',
+    'https': f'https://{surfshark_proxy_username}:{surfshark_proxy_password}@{surfshark_proxy_url}',
+}
+
 def fetch_article_details(link):
     headers = {
         'User-Agent': random.choice(user_agents),
@@ -37,11 +47,6 @@ def fetch_article_details(link):
         'Connection': 'keep-alive',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br'
-    }
-    proxies = {
-        # Replace with your proxy settings if needed
-        # 'http': 'http://yourproxy:port',
-        # 'https': 'http://yourproxy:port',
     }
     try:
         logging.debug(f"Fetching article details from {link}")

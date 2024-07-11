@@ -24,6 +24,8 @@ jobs:
                   echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
                   echo "FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}" >> $GITHUB_ENV
                   echo "FIREBASE_SERVICE_ACCOUNT_BASE64=${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" >> $GITHUB_ENV
+                  echo "SURFSHARK_PROXY_USERNAME=${{ secrets.SURFSHARK_PROXY_USERNAME }}" >> $GITHUB_ENV
+                  echo "SURFSHARK_PROXY_PASSWORD=${{ secrets.SURFSHARK_PROXY_PASSWORD }}" >> $GITHUB_ENV
 
             - name: Decode Firebase service account key
               run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/firebase-key.json
@@ -47,7 +49,7 @@ jobs:
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
 
-            - name: Run Python script (in/in-new.py)
+            - name: Run Python script (in-new.py)
               run: python3 in/in-new.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
@@ -58,8 +60,10 @@ jobs:
                   MONGO_URI: ${{ secrets.MONGO_URI }}
                   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
                   FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
+                  SURFSHARK_PROXY_USERNAME: ${{ secrets.SURFSHARK_PROXY_USERNAME }}
+                  SURFSHARK_PROXY_PASSWORD: ${{ secrets.SURFSHARK_PROXY_PASSWORD }}
 
-            - name: Run Python script (rw/main.py)
+            - name: Run Python script (main.py)
               run: python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
@@ -70,12 +74,14 @@ jobs:
                   MONGO_URI: ${{ secrets.MONGO_URI }}
                   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
                   FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
+                  SURFSHARK_PROXY_USERNAME: ${{ secrets.SURFSHARK_PROXY_USERNAME }}
+                  SURFSHARK_PROXY_PASSWORD: ${{ secrets.SURFSHARK_PROXY_PASSWORD }}
 
             - name: Deploy to Firebase
               uses: FirebaseExtended/action-hosting-deploy@v0
               with:
                   repoToken: ${{ secrets.GITHUB_TOKEN }}
-                  firebaseServiceAccount: ${{ github.workspace }}/firebase-key.json
+                  firebaseServiceAccount: $GITHUB_WORKSPACE/firebase-key.json
                   channelId: live
                   projectId: auto-cryptoskopen-1
                   expires: 7d
