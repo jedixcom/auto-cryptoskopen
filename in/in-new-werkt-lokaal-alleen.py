@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import pymongo
 import time
 import os
-import random
 
 # Load MongoDB URI from the environment variable
 mongo_uri = os.getenv('MONGO_URI')
@@ -25,32 +24,13 @@ except pymongo.errors.ConnectionError as e:
 
 # Function to fetch article details
 def fetch_article_details(link):
-    user_agents = [
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-        '(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-        '(KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
-        '(KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/605.1.15 '
-        '(KHTML, like Gecko) Version/14.0.3 Safari/605.1.15',
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 '
-        '(KHTML, like Gecko) Version/13.1.2 Safari/605.1.15'
-    ]
     headers = {
-        'User-Agent': random.choice(user_agents),
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Connection': 'keep-alive',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Referer': 'https://cointelegraph.com/',
-        'DNT': '1',
-        'Upgrade-Insecure-Requests': '1'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
-
     try:
         print(f"Fetching article details from {link}...")
-        response = requests.get(link, headers=headers, timeout=10)
+        response = requests.get(link, headers=headers)
         if response.status_code == 200:
             print(f"Successfully fetched article details from {link}.")
             full_text, image_url = extract_article_details(response.text)
@@ -93,7 +73,6 @@ def run_script(rss_feed_url, num_articles, category):
             continue  # Skip to the next entry
 
         attempts = 3
-        backoff_factor = 2
         while attempts > 0:
             full_text, image_url = fetch_article_details(entry.link)
             if full_text and image_url:
@@ -115,10 +94,10 @@ def run_script(rss_feed_url, num_articles, category):
                 except pymongo.errors.PyMongoError as e:
                     print(f"Failed to save article '{entry.title}' to MongoDB. Error: {e}")
                     attempts -= 1
-                    time.sleep(backoff_factor ** (3 - attempts))
+                    time.sleep(5)
             else:
                 attempts -= 1
-                time.sleep(backoff_factor ** (3 - attempts))
+                time.sleep(5)
 
         if attempts == 0:
             print(f"Failed to fetch and save article '{entry.title}' after multiple attempts.")
