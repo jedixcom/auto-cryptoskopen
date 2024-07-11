@@ -42,7 +42,7 @@ jobs:
                   node-version: '16' # Adjust this to your desired Node.js version
 
             - name: Install dependencies
-              run: npm install
+              run: npm install firebase-tools@13.13.1
 
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
