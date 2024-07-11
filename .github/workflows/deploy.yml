@@ -50,15 +50,15 @@ jobs:
             - name: Apt-Get Install
               run: |
                   sudo apt-get update
-                  sudo apt install -y openvpn openvpn-systemd-resolved resolvconf easy-rsa python3-pip
+                  sudo apt install -y python3-pip
 
             - name: Install PIP packets
               run: |
                   pip3 install -r requirements.txt
 
-            - name: Run Python script in/in-new.py
+            - name: Run Python script in/in-oxy.py
               run: |
-                  python3 in/in-new.py
+                  python3 in/in-oxy.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
                   BASE_DIR: ${{ secrets.BASE_DIR }}
@@ -67,6 +67,8 @@ jobs:
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
                   PROXY_AUTH: ${{ secrets.PROXY_AUTH }}
+                  JWT_USER_ID: ${{ secrets.JWT_USER_ID }}
+                  JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
 
             - name: Run Python script rw/main.py
               run: |
@@ -80,6 +82,7 @@ jobs:
                   MONGO_URI: ${{ secrets.MONGO_URI }}
                   JWT_USER_ID: ${{ secrets.JWT_USER_ID }}
                   JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+                  PROXY_AUTH: ${{ secrets.PROXY_AUTH }}
 
             - name: Deploy to Firebase
               uses: FirebaseExtended/action-hosting-deploy@v0
