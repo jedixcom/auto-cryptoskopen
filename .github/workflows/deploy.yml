@@ -39,18 +39,15 @@ jobs:
               run: python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-                  BASE_DIR: ${{ secrets.BASE_DIR }}
-                  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+                  BASE_DIR: ${{ github.workspace }}/cryptoskopen-website
+                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firebase-key.json
                   DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
 
             - name: Deploy to Firebase
-              uses: FirebaseExtended/action-hosting-deploy@v0
-              with:
-                  repoToken: ${{ secrets.GITHUB_TOKEN }}
-                  firebaseServiceAccount: ${{ github.workspace }}/firebase-key.json
-                  channelId: live
-                  projectId: auto-cryptoskopen-1
-                  expires: 7d
-                  entryPoint: cryptoskopen-website
+              run: |
+                  npm install -g firebase-tools
+                  firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}"
+              env:
+                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firebase-key.json
