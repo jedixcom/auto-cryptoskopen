@@ -59,7 +59,7 @@ jobs:
                   client
                   dev tun
                   proto tcp
-                  remote de-fra.prod.surfshark.com 443
+                  remote de-fra.prod.surfshark.com 1443
                   remote-random
                   nobind
                   tun-mtu 1500

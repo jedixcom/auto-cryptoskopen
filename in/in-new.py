@@ -36,23 +36,8 @@ user_agents = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15',
 ]
 
-# Surfshark proxy details 
-proxies = [
-    "nl-ams.prod.surfshark.com:443",
-    "us-bos.prod.surfshark.com:443"
-]
-surfshark_proxy_username = "kNtgW7qrS5rJJkbQagsFHT76" 
-surfshark_proxy_password = "qGnBxqVhLheQPpdCwzSMPyHj" 
-
-def get_proxies():
-    proxy_url = random.choice(proxies)
-    return {
-        'http': f'http://{surfshark_proxy_username}:{surfshark_proxy_password}@{proxy_url}',
-        'https': f'https://{surfshark_proxy_username}:{surfshark_proxy_password}@{proxy_url}',
-    }
-
 def fetch_article_details(link, retries=3, backoff_factor=2):
-    """Fetches article details from a given link, with retry logic and proxy support."""
+    """Fetches article details from a given link, with retry logic and headers."""
     for attempt in range(retries):
         try:
             headers = {
@@ -65,9 +50,8 @@ def fetch_article_details(link, retries=3, backoff_factor=2):
                 'DNT': '1',
                 'Upgrade-Insecure-Requests': '1'
             }
-            proxy = get_proxies()
-            logging.debug(f"Fetching article details from {link} using proxy {proxy}")
-            response = requests.get(link, headers=headers, proxies=proxy, verify=True, timeout=10)
+            logging.debug(f"Fetching article details from {link}")
+            response = requests.get(link, headers=headers, verify=True, timeout=10)
             response.raise_for_status()  # Raise an exception for bad status codes
 
             logging.debug(f"Successfully fetched article details from {link}")
