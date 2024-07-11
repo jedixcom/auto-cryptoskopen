@@ -43,7 +43,7 @@ def fetch_article_details(link, max_retries=3, timeout=30):
     retries = 0
     while retries < max_retries:
         try:
-            print(f"Fetching article details from {link} (Attempt {retries + 1}/{max_retries})...")
+            print(f"Fetching article details from {link} (Attempt {retries + 1}/{max_retries}) using proxy {proxies['http']}...")
             response = requests.get(link, headers=headers, proxies=proxies, timeout=timeout)
             if response.status_code == 200:
                 print(f"Successfully fetched article details from {link}.")
