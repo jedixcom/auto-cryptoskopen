@@ -115,6 +115,15 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
         print(f"Error in process_article: {e}")
         return None, None
 
+def cleanup():
+    """Remove sensitive files after use."""
+    try:
+        if os.path.exists(google_application_credentials_path):
+            os.remove(google_application_credentials_path)
+            print("Temporary Google application credentials file removed.")
+    except Exception as e:
+        print(f"Error during cleanup: {e}")
+
 def main():
     try:
         domain_name = 'https://auto-cryptoskopen-1.web.app/'
@@ -169,6 +178,8 @@ def main():
         print("Deployment to Firebase completed.")
     except Exception as e:
         print(f"Error in main: {e}")
+    finally:
+        cleanup()
 
 if __name__ == "__main__":
     print("Starting the article rewriter script...")
