@@ -22,6 +22,8 @@ jobs:
                   echo "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}" >> $GITHUB_ENV
                   echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
                   echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
+                  echo "FIREBASE_SERVICE_ACCOUNT_BASE64=${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" >> $GITHUB_ENV
+                  echo "FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}" >> $GITHUB_ENV
 
             - name: Decode Firebase service account key
               run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/firebase-key.json
@@ -39,11 +41,13 @@ jobs:
               run: python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-                  BASE_DIR: ${{ github.workspace }}/cryptoskopen-website
-                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firebase-key.json
+                  BASE_DIR: ${{ secrets.BASE_DIR }}
+                  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
                   DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
+                  FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
+                  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
             - name: Deploy to Firebase
               run: |
