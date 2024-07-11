@@ -15,6 +15,7 @@ from html_creation import create_single_article_html
 from html_update import update_category_index, update_index_html
 from utils import get_current_timestamp, create_url_slug, generate_summary, remove_original_images
 from dotenv import load_dotenv
+import base64
 
 # Load environment variables from .env file
 load_dotenv()
@@ -22,6 +23,7 @@ load_dotenv()
 bucket_name = os.getenv('BUCKET_NAME')
 base_dir = os.getenv('BASE_DIR')
 google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+google_application_credentials_base64 = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_BASE64')
 domain_name = os.getenv('DOMAIN_NAME')
 openai_api_key = os.getenv('OPENAI_API_KEY')
 mongo_uri = os.getenv('MONGO_URI')
@@ -29,16 +31,22 @@ mongo_uri = os.getenv('MONGO_URI')
 # Debugging environment variables
 print(f"BUCKET_NAME: {bucket_name}")
 print(f"BASE_DIR: {base_dir}")
+print(f"GOOGLE_APPLICATION_CREDENTIALS_BASE64: {google_application_credentials_base64}")
 print(f"GOOGLE_APPLICATION_CREDENTIALS: {google_application_credentials}")
 print(f"DOMAIN_NAME: {domain_name}")
 print(f"OPENAI_API_KEY: {openai_api_key}")
 print(f"MONGO_URI: {mongo_uri}")
 
 # Ensure all required environment variables are set
-if not all([bucket_name, base_dir, google_application_credentials, domain_name, openai_api_key, mongo_uri]):
+if not all([bucket_name, base_dir, google_application_credentials_base64, domain_name, openai_api_key, mongo_uri]):
     raise ValueError("One or more required environment variables are not set.")
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials
+# Decode the base64-encoded Google application credentials
+google_application_credentials_path = os.path.join(base_dir, 'firebase-key.json')
+with open(google_application_credentials_path, 'wb') as f:
+    f.write(base64.b64decode(google_application_credentials_base64))
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_application_credentials_path
 openai.api_key = openai_api_key
 
 def create_directories_and_files(base_dir):
@@ -112,7 +120,6 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
 
 def main():
     try:
-        domain_name = 'https://auto-cryptoskopen-1.web.app/'
         print(f"Domain name set to: {domain_name}")
 
         create_directories_and_files(base_dir)
@@ -133,7 +140,7 @@ def main():
         rewritten_articles = []
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [
-                executor.submit(process_article, article, base_dir, bucket_name, domain_name, stop_words, input_collection) 
+                executor.submit(process_article, article, base_dir, bucket_name, domain_name, stop_words, input_collection)
                 for article in input_collection.find({"processed": {"$ne": True}})
             ]
             for future in concurrent.futures.as_completed(futures):
