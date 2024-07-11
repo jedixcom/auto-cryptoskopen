@@ -18,7 +18,6 @@ jobs:
               run: |
                   echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> $GITHUB_ENV
                   echo "BASE_DIR=${{ secrets.BASE_DIR }}" >> $GITHUB_ENV
-                  echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-key.json" >> $GITHUB_ENV
                   echo "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}" >> $GITHUB_ENV
                   echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
                   echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
@@ -29,22 +28,21 @@ jobs:
             - name: Install dependencies
               run: |
                   sudo apt-get update
-                  sudo apt-get install python3-pip -y
+                  sudo apt-get install -y python3-pip
                   pip3 install -r requirements.txt
-                  npm install -g firebase-tools@13.13.1
+
+            - name: Install Firebase CLI
+              run: npm install -g firebase-tools@13.13.1
 
             - name: Run Python script
               run: python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
                   BASE_DIR: ${{ secrets.BASE_DIR }}
-                  GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/firebase-key.json
+                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firebase-key.json
                   DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
 
             - name: Deploy to Firebase
-                  run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
-                  env:
-                    FIREBASE_SERVICE_ACCOUNT: $GITHUB_WORKSPACE/firebase-key.json
-                    PROJECT_ID: auto-cryptoskopen-1
+              run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
