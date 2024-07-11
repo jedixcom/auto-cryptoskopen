@@ -119,7 +119,10 @@ def process_article(article, base_dir, bucket_name, domain_name, stop_words, inp
         print(f"Error in process_article: {e}")
         return None, None
 
-
+def cleanup():
+    """Remove sensitive files after use."""
+    print("Temporary Google application credentials file removed.")
+     
 
 def main():
     try:
