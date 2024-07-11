@@ -19,3 +19,4 @@ node_modules/
 # Ignore all executable files
 **/*.pyc
 **/bin/**
+RSA_PK.pem
