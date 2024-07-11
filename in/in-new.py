@@ -4,40 +4,7 @@ from bs4 import BeautifulSoup
 import pymongo
 import time
 import os
-
-def display_menu():
-    print("---------------------------------------------------")
-    print("Welcome to DutchJinn News-Manipulator - IN MDB 1.0")
-    print("---------------------------------------------------")
-    print("Menu:\n")
-    print("1. Set RSS")
-    print("2. Set No. Articles")
-    print("3. Select Category")
-    print("4. CoinTelegraph RSS")
-    print("5. Run Script")
-    print("6. Clear MongoDB - Collection: news_rewrite.news_rewrite.in")
-    print("7. Clear MongoDB - Collection: news_rewrite.saved_rewritten")
-    print("8. Exit")
-
-def get_user_choice():
-    choice = input("Enter your choice (1-8): ")
-    return choice
-
-def set_rss():
-    rss_url = input("Enter RSS feed URL: ")
-    return rss_url
-
-def set_number_of_articles():
-    try:
-        num_articles = int(input("Enter the number of articles to process: "))
-        return num_articles
-    except ValueError:
-        print("Invalid number. Please enter a valid integer.")
-        return None
-
-def select_category():
-    category = input("Enter the category to filter articles: ")
-    return category
+from datetime import datetime
 
 # Load MongoDB URI from the environment variable
 mongo_uri = os.getenv('MONGO_URI')
@@ -81,22 +48,28 @@ def extract_article_details(html_content):
         print(f"Error extracting article details: {e}")
         return "Full text not found.", "https://example.com/default-image.jpg"
 
+def get_latest_article_date():
+    latest_article = input_collection.find_one(sort=[("published", pymongo.DESCENDING)])
+    if latest_article:
+        latest_article_date = datetime.strptime(latest_article["published"], "%a, %d %b %Y %H:%M:%S %z")
+        return latest_article_date.replace(tzinfo=None)  # Convert to timezone-naive datetime
+    return None
+
 def run_script(rss_feed_url, num_articles, category):
     # RSS feed URL
     feed = feedparser.parse(rss_feed_url)
+    latest_article_date = get_latest_article_date()
+    new_articles = []
 
-    # Save articles to MongoDB with retry logic
-    count = 0
     for entry in feed.entries:
-        if count >= num_articles:
-            break
+        published = datetime(*entry.published_parsed[:6])
+        if not latest_article_date or published > latest_article_date:
+            new_articles.append(entry)
+            if len(new_articles) >= num_articles:
+                break
 
-        # Check if the article already exists
-        existing_article = input_collection.find_one({"link": entry.link})
-        if existing_article:
-            print(f"Article '{entry.title}' already exists in the database.")
-            continue  # Skip to the next entry
-
+    count = 0
+    for entry in new_articles:
         attempts = 3
         while attempts > 0:
             full_text, image_url = fetch_article_details(entry.link)
@@ -127,49 +100,16 @@ def run_script(rss_feed_url, num_articles, category):
         if attempts == 0:
             print(f"Failed to fetch and save article '{entry.title}' after multiple attempts.")
 
-    print(f"{count} RSS news articles have been saved to the 'news_rewrite.in' collection in MongoDB.")
-
-def clear_collection(collection):
-    try:
-        collection.delete_many({})
-        print(f"Collection {collection.name} cleared.")
-    except pymongo.errors.PyMongoError as e:
-        print(f"Failed to clear collection {collection.name}. Error: {e}")
+    print(f"{count} new RSS news articles have been saved to the 'news_rewrite.in' collection in MongoDB.")
 
 def main():
-    rss_feed_url = None
-    num_articles = None
+    # Hardcoded parameters for CoinTelegraph RSS feed
+    rss_feed_url = 'https://cointelegraph.com/rss'
+    num_articles = 10
     category = None
 
-    while True:
-        display_menu()
-        choice = get_user_choice()
-
-        if choice == '1':
-            rss_feed_url = set_rss()
-        elif choice == '2':
-            num_articles = set_number_of_articles()
-        elif choice == '3':
-            category = select_category()
-        elif choice == '4':
-            rss_feed_url = 'https://cointelegraph.com/rss'
-            num_articles = 25
-            category = None
-            print("CoinTelegraph RSS feed URL set to process 5 articles with no specific category.")
-        elif choice == '5':
-            if rss_feed_url and num_articles:
-                run_script(rss_feed_url, num_articles, category)
-            else:
-                print("Please set RSS feed URL and number of articles before running the script.")
-        elif choice == '6':
-            clear_collection(input_collection)
-        elif choice == '7':
-            clear_collection(output_collection)
-        elif choice == '8':
-            print("Exiting the program.")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+    # Run the script with the hardcoded parameters
+    run_script(rss_feed_url, num_articles, category)
 
 if __name__ == "__main__":
     main()

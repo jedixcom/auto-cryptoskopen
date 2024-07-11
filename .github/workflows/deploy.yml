@@ -47,6 +47,18 @@ jobs:
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
 
+           - name: Run Python script
+              run: python3 in/in-new.py
+              env:
+                  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+                  BASE_DIR: ${{ secrets.BASE_DIR }}
+                  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+                  DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
+                  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+                  MONGO_URI: ${{ secrets.MONGO_URI }}
+                  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+                  FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }} 
+
             - name: Run Python script
               run: python3 rw/main.py
               env:
