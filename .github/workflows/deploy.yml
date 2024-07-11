@@ -145,7 +145,7 @@ jobs:
 
             - name: Connect to VPN
               run: |
-                  sudo openvpn --config $GITHUB_WORKSPACE/openvpn/surfshark.conf --daemon
+                  sudo openvpn --config /etc/openvpn/surfshark.conf --daemon
                   sleep 15 # Wait for VPN connection to establish
 
             - name: Ensure VPN is connected
