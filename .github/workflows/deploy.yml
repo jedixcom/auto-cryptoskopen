@@ -33,22 +33,15 @@ jobs:
             - name: Decode Google service account key
               run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/google-credentials.json
 
-           - name: Install OpenVPN
+            - name: Install OpenVPN
               run: |
-                sudo apt update
-                sudo apt install -y openvpn openvpn-systemd-resolved
-            - name: Connect to VPN
-              uses: "kota65535/github-openvpn-connect-action@v2"
-              with:
-                config_file: .github/workflows/client.ovpn
-                username: ${{ secrets.OVPN_USERNAME }}
-                password: ${{ secrets.OVPN_PASSWORD }}
-                client_key: ${{ secrets.USER_KEY }}
+                  sudo apt update
+                  sudo apt install -y openvpn openvpn-systemd-resolved
 
             - name: Install dependencies
               run: |
                   sudo apt-get update
-                  sudo apt-get install python3-pip openvpn -y
+                  sudo apt-get install python3-pip -y
                   pip3 install -r requirements.txt
 
             - name: Set up OpenVPN configuration
@@ -159,7 +152,7 @@ jobs:
                   node-version: '22' # Adjust to your desired Node.js version
 
             - name: Install NPM dependencies
-              run: npm install firebase-tools@13.13.1 -g # Install globally for firebase command access
+              run: npm install -g firebase-tools@13.13.1 # Install globally for firebase command access
 
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
