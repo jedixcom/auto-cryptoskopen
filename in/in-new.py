@@ -36,21 +36,6 @@ user_agents = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15',
 ]
 
-# Surfshark proxy details (hardcoded for testing)
-proxies = [
-    "nl-ams.prod.surfshark.com:443",
-    "us-bos.prod.surfshark.com:443"
-]
-surfshark_proxy_username = "kNtgW7qrS5rJJkbQagsFHT76"
-surfshark_proxy_password = "qGnBxqVhLheQPpdCwzSMPyHj"
-
-def get_proxies():
-    proxy_url = random.choice(proxies)
-    return {
-        'http': f'http://{surfshark_proxy_username}:{surfshark_proxy_password}@{proxy_url}',
-        'https': f'https://{surfshark_proxy_username}:{surfshark_proxy_password}@{proxy_url}',
-    }
-
 def fetch_article_details(link):
     headers = {
         'User-Agent': random.choice(user_agents),
@@ -63,9 +48,8 @@ def fetch_article_details(link):
         'Upgrade-Insecure-Requests': '1'
     }
     try:
-        proxy = get_proxies()
-        logging.debug(f"Fetching article details from {link} using proxy {proxy}")
-        response = requests.get(link, headers=headers, proxies=proxy, verify=True)
+        logging.debug(f"Fetching article details from {link}")
+        response = requests.get(link, headers=headers, verify=True)
         logging.debug(f"HTTP response status code: {response.status_code}")
 
         if response.status_code == 200:
@@ -73,11 +57,10 @@ def fetch_article_details(link):
             full_text, image_url = extract_article_details(response.text)
             return full_text, image_url
         elif response.status_code == 403:
-            logging.warning(f"Access denied (403) for {link}. Retrying with a different proxy...")
+            logging.warning(f"Access denied (403) for {link}. Retrying...")
             time.sleep(5)  # Wait before retrying
             headers['User-Agent'] = random.choice(user_agents)  # Change User-Agent
-            proxy = get_proxies()
-            response = requests.get(link, headers=headers, proxies=proxy, verify=True)
+            response = requests.get(link, headers=headers, verify=True)
             logging.debug(f"HTTP response status code on retry: {response.status_code}")
             if response.status_code == 200:
                 logging.debug(f"Successfully fetched article details from {link} on retry")
