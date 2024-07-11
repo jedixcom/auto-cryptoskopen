@@ -10,11 +10,17 @@ mongo_uri = os.getenv('MONGO_URI')
 if not mongo_uri:
     raise EnvironmentError("Missing environment variable MONGO_URI")
 
+print("Connecting to MongoDB...")
 # Connect to MongoDB using the URI from the environment variable
-client = pymongo.MongoClient(mongo_uri)
-db = client["cryptoskopen-eu"]
-input_collection = db["in"]
-output_collection = db["rw"]
+try:
+    client = pymongo.MongoClient(mongo_uri)
+    db = client["cryptoskopen-eu"]
+    input_collection = db["in"]
+    output_collection = db["rw"]
+    print("Connected to MongoDB successfully.")
+except pymongo.errors.ConnectionError as e:
+    print(f"Failed to connect to MongoDB. Error: {e}")
+    raise
 
 # Function to fetch article details
 def fetch_article_details(link):
@@ -23,8 +29,10 @@ def fetch_article_details(link):
                       '(KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
     try:
+        print(f"Fetching article details from {link}...")
         response = requests.get(link, headers=headers)
         if response.status_code == 200:
+            print(f"Successfully fetched article details from {link}.")
             full_text, image_url = extract_article_details(response.text)
             return full_text, image_url
         else:
@@ -37,6 +45,7 @@ def fetch_article_details(link):
 # Function to extract full text and image URL from HTML content
 def extract_article_details(html_content):
     try:
+        print("Extracting article details from HTML content...")
         soup = BeautifulSoup(html_content, 'html.parser')
         article_body = soup.find('div', class_='post-content')
         full_text = article_body.get_text(separator='\n').strip() if article_body else "Full text not found."
@@ -48,16 +57,16 @@ def extract_article_details(html_content):
         return "Full text not found.", "https://example.com/default-image.jpg"
 
 def run_script(rss_feed_url, num_articles, category):
-    # RSS feed URL
+    print(f"Parsing RSS feed from {rss_feed_url}...")
     feed = feedparser.parse(rss_feed_url)
 
-    # Save articles to MongoDB with retry logic
     count = 0
     for entry in feed.entries:
         if count >= num_articles:
             break
 
         # Check if the article already exists
+        print(f"Checking if article '{entry.title}' already exists in the database...")
         existing_article = input_collection.find_one({"link": entry.link})
         if existing_article:
             print(f"Article '{entry.title}' already exists in the database.")
@@ -100,7 +109,9 @@ def main():
     num_articles = 3  # Set the desired number of articles to fetch
     category = None  # Set the desired category if needed
 
+    print("Starting the script...")
     run_script(rss_feed_url, num_articles, category)
+    print("Script finished.")
 
 if __name__ == "__main__":
     main()
