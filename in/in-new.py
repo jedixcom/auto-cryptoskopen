@@ -38,8 +38,8 @@ user_agents = [
 
 # Surfshark proxy details 
 proxies = [
-    "nl-ams.prod.surfshark.com:1443",
-    "us-bos.prod.surfshark.com:1443"
+    "nl-ams.prod.surfshark.com:443",
+    "us-bos.prod.surfshark.com:443"
 ]
 surfshark_proxy_username = "kNtgW7qrS5rJJkbQagsFHT76" 
 surfshark_proxy_password = "qGnBxqVhLheQPpdCwzSMPyHj" 
