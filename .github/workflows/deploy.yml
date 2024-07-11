@@ -161,8 +161,8 @@ jobs:
                   feed_url: 'https://cointelegraph.com/rss'
                   file_path: './feed.json'
                   parser_options: '{"useISODateFormat": false, "getExtraEntryFields": "(feedEntry) => { return { ''content:encoded'': feedEntry[''content:encoded''] || '''' }; }"}'
-              fetch_options: '{}'
-              remove_published: false
+                  fetch_options: '{}'
+                  remove_published: false
 
             - name: Run Python script in/in-new.py
               run: |
