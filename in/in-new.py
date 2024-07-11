@@ -36,13 +36,13 @@ user_agents = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15',
 ]
 
-# Surfshark proxy details (hardcoded for testing)
+# Surfshark proxy details 
 proxies = [
-    "nl-ams.prod.surfshark.com:443",
-    "us-bos.prod.surfshark.com:443"
+    "nl-ams.prod.surfshark.com:1443",
+    "us-bos.prod.surfshark.com:1443"
 ]
-surfshark_proxy_username = "kNtgW7qrS5rJJkbQagsFHT76"
-surfshark_proxy_password = "qGnBxqVhLheQPpdCwzSMPyHj"
+surfshark_proxy_username = "kNtgW7qrS5rJJkbQagsFHT76" 
+surfshark_proxy_password = "qGnBxqVhLheQPpdCwzSMPyHj" 
 
 def get_proxies():
     proxy_url = random.choice(proxies)
@@ -51,62 +51,58 @@ def get_proxies():
         'https': f'https://{surfshark_proxy_username}:{surfshark_proxy_password}@{proxy_url}',
     }
 
-def fetch_article_details(link):
-    headers = {
-        'User-Agent': random.choice(user_agents),
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Connection': 'keep-alive',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Referer': 'https://cointelegraph.com/',
-        'DNT': '1',
-        'Upgrade-Insecure-Requests': '1'
-    }
-    try:
-        proxy = get_proxies()
-        logging.debug(f"Fetching article details from {link} using proxy {proxy}")
-        response = requests.get(link, headers=headers, proxies=proxy, verify=True)
-        logging.debug(f"HTTP response status code: {response.status_code}")
+def fetch_article_details(link, retries=3, backoff_factor=2):
+    """Fetches article details from a given link, with retry logic and proxy support."""
+    for attempt in range(retries):
+        try:
+            headers = {
+                'User-Agent': random.choice(user_agents),
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Connection': 'keep-alive',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Referer': 'https://cointelegraph.com/',
+                'DNT': '1',
+                'Upgrade-Insecure-Requests': '1'
+            }
+            proxy = get_proxies()
+            logging.debug(f"Fetching article details from {link} using proxy {proxy}")
+            response = requests.get(link, headers=headers, proxies=proxy, verify=True, timeout=10)
+            response.raise_for_status()  # Raise an exception for bad status codes
 
-        if response.status_code == 200:
             logging.debug(f"Successfully fetched article details from {link}")
             full_text, image_url = extract_article_details(response.text)
             return full_text, image_url
-        elif response.status_code == 403:
-            logging.warning(f"Access denied (403) for {link}. Retrying with a different proxy...")
-            time.sleep(5)  # Wait before retrying
-            headers['User-Agent'] = random.choice(user_agents)  # Change User-Agent
-            proxy = get_proxies()
-            response = requests.get(link, headers=headers, proxies=proxy, verify=True)
-            logging.debug(f"HTTP response status code on retry: {response.status_code}")
-            if response.status_code == 200:
-                logging.debug(f"Successfully fetched article details from {link} on retry")
-                full_text, image_url = extract_article_details(response.text)
-                return full_text, image_url
-            else:
-                logging.warning(f"Failed to fetch article details from {link}. Status code: {response.status_code}")
-                return None, None
-        else:
-            logging.warning(f"Failed to fetch article details from {link}. Status code: {response.status_code}")
-            return None, None
-    except requests.exceptions.RequestException as e:
-        logging.error(f"Failed to fetch article details from {link}. Exception: {e}")
-        return None, None
+
+        except requests.exceptions.RequestException as e:
+            logging.warning(f"Error fetching URL: {link}. Attempt: {attempt+1}. Error: {e}")
+            if attempt < retries - 1:  # Wait before retrying
+                sleep_time = backoff_factor ** attempt
+                logging.info(f"Retrying in {sleep_time} seconds...")
+                time.sleep(sleep_time)
+
+    return None, None  # Return None for both values if all attempts fail
 
 def extract_article_details(html_content):
+    """Extracts full text and image URL from the HTML content of an article."""
     try:
         logging.debug("Extracting article details from HTML content")
         soup = BeautifulSoup(html_content, 'html.parser')
+
         article_body = soup.find('div', class_='post-content')
         full_text = article_body.get_text(separator='\n').strip() if article_body else "Full text not found."
+
         og_image = soup.find('meta', property='og:image')
         image_url = og_image['content'] if og_image and og_image['content'] else "https://example.com/default-image.jpg"
+
         return full_text, image_url
+
     except Exception as e:
         logging.error(f"Error extracting article details: {e}")
         return "Full text not found.", "https://example.com/default-image.jpg"
 
 def get_latest_article_date():
+    """Retrieves the publication date of the most recent article from the database."""
     logging.debug("Fetching the latest article date from the database")
     latest_article = input_collection.find_one(sort=[("published", pymongo.DESCENDING)])
     if latest_article:
@@ -116,6 +112,7 @@ def get_latest_article_date():
     return None
 
 def run_script(rss_feed_url, num_articles, category):
+    """Main function to fetch, parse, and store RSS feed articles."""
     logging.info(f"Parsing RSS feed: {rss_feed_url}")
     feed = feedparser.parse(rss_feed_url)
     latest_article_date = get_latest_article_date()
@@ -133,35 +130,28 @@ def run_script(rss_feed_url, num_articles, category):
                 logging.info(f"Article '{entry.title}' already exists in the database.")
                 continue
 
-            attempts = 3
-            while attempts > 0:
-                full_text, image_url = fetch_article_details(entry.link)
-                if full_text and image_url:
-                    article = {
-                        "title": entry.title,
-                        "link": entry.link,
-                        "published": entry.published,
-                        "summary": entry.summary,
-                        "full_text": full_text,
-                        "image_url": image_url,
-                        "category": category if category else None,
-                        "processed": False
-                    }
-                    try:
-                        input_collection.insert_one(article)
-                        logging.info(f"Saved article '{entry.title}' to MongoDB.")
-                        count += 1
-                        break
-                    except pymongo.errors.PyMongoError as e:
-                        logging.error(f"Failed to save article '{entry.title}' to MongoDB. Error: {e}")
-                        attempts -= 1
-                        time.sleep(5)
-                else:
-                    attempts -= 1
-                    time.sleep(5)
+            full_text, image_url = fetch_article_details(entry.link)
 
-            if attempts == 0:
-                logging.warning(f"Failed to fetch and save article '{entry.title}' after multiple attempts.")
+            if full_text and image_url:
+                article = {
+                    "title": entry.title,
+                    "link": entry.link,
+                    "published": entry.published,
+                    "summary": entry.summary,
+                    "full_text": full_text,
+                    "image_url": image_url,
+                    "category": category if category else None,
+                    "processed": False
+                }
+                try:
+                    input_collection.insert_one(article)
+                    logging.info(f"Saved article '{entry.title}' to MongoDB.")
+                    count += 1
+                except pymongo.errors.PyMongoError as e:
+                    logging.error(f"Failed to save article '{entry.title}' to MongoDB. Error: {e}")
+            else:
+                logging.warning(f"Failed to fetch article details for '{entry.title}'. Skipping...")
+
     logging.info(f"{count} new RSS news articles have been saved to the 'news_rewrite.in' collection in MongoDB.")
 
 def main():
