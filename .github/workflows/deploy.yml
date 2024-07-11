@@ -125,6 +125,9 @@ jobs:
                   </tls-auth>
                   ' | sudo tee $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf > /dev/null
 
+            - name: Ensure VPN is connected
+              run: sudo cat $GITHUB_WORKSPACE/etc/openvpn/surfshark-status.log
+
             - name: Add Surfshark credentials
               run: |
                   echo "${{ secrets.SURFSHARK_USERNAME }}" | sudo tee $GITHUB_WORKSPACE/etc/openvpn/credentials.txt > /dev/null
@@ -133,7 +136,7 @@ jobs:
 
             - name: Connect to VPN
               run: |
-                  openvpn --config $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf --daemon
+                  sudo openvpn --config $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf --daemon
                   sleep 15
               # Add additional logging
               env:
