@@ -18,7 +18,7 @@ jobs:
               run: |
                   echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> $GITHUB_ENV
                   echo "BASE_DIR=${{ secrets.BASE_DIR }}" >> $GITHUB_ENV
-                  echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> $GITHUB_ENV
+                  echo "GOOGLE_APPLICATION_CREDENTIALS_BASE64=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" >> $GITHUB_ENV
                   echo "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}" >> $GITHUB_ENV
                   echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
                   echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
@@ -31,17 +31,30 @@ jobs:
               run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/firebase-key.json
 
             - name: Decode Google service account key
-              run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > $GITHUB_WORKSPACE/cryptoskopen-website/firebase-key.json
+              run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/google-credentials.json
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '22' # Adjust to your desired Node.js version
+
+            - name: Install NPM dependencies
+              run: npm install -g firebase-tools@13.13.1 # Install globally for firebase command access
+
+            - name: Install OpenVPN
+              run: |
+                  sudo apt update
+                  sudo apt install -y openvpn openvpn-systemd-resolved
 
             - name: Install dependencies
               run: |
                   sudo apt-get update
-                  sudo apt-get install python3-pip openvpn -y
+                  sudo apt-get install python3-pip -y
                   pip3 install -r requirements.txt
 
             - name: Set up OpenVPN configuration
               run: |
-                  mkdir -p $GITHUB_WORKSPACE/etc/openvpn
+                  mkdir -p /etc/openvpn
                   echo '
                   client
                   dev tun
@@ -57,7 +70,7 @@ jobs:
 
                   remote-cert-tls server
 
-                  auth-user-pass $GITHUB_WORKSPACE/etc/openvpn/credentials.txt
+                  auth-user-pass
 
                   #comp-lzo
                   verb 3
@@ -123,86 +136,48 @@ jobs:
                   134d3a3aa2f904512e85aa2dc2202498
                   -----END OpenVPN Static key V1-----
                   </tls-auth>
-                  ' | sudo tee $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf > /dev/null
+                  ' | sudo tee /etc/openvpn/surfshark.conf > /dev/null
 
             - name: Add Surfshark credentials
               run: |
-                  echo "${{ secrets.SURFSHARK_USERNAME }}" | sudo tee $GITHUB_WORKSPACE/etc/openvpn/credentials.txt > /dev/null
-                  echo "${{ secrets.SURFSHARK_PASSWORD }}" | sudo tee -a $GITHUB_WORKSPACE/etc/openvpn/credentials.txt > /dev/null
-                  sudo chmod 600 $GITHUB_WORKSPACE/etc/openvpn/credentials.txt
+                  echo "${{ secrets.SURFSHARK_PROXY_USERNAME }}" | sudo tee /etc/openvpn/credentials.txt > /dev/null
+                  echo "${{ secrets.SURFSHARK_PROXY_PASSWORD }}" | sudo tee -a /etc/openvpn/credentials.txt > /dev/null
+                  sudo chmod 600 /etc/openvpn/credentials.txt
 
             - name: Connect to VPN
               run: |
-                  sudo openvpn --config $GITHUB_WORKSPACE/etc/openvpn/surfshark.conf --daemon
-                  sleep 15
+                  sudo openvpn --config /etc/openvpn/surfshark.conf --daemon
+                  sleep 15 # Wait for VPN connection to establish
 
-            - name: Ensure VPN is connected
+            - name: Verify VPN connection
               run: |
                   ifconfig tun0 # Check if tun0 interface is up
                   curl -s ifconfig.me # Check public IP address
 
-            - name: Set environment variables
-              run: |
-                  echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> $GITHUB_ENV
-                  echo "BASE_DIR=${{ secrets.BASE_DIR }}" >> $GITHUB_ENV
-                  echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> $GITHUB_ENV
-                  echo "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}" >> $GITHUB_ENV
-                  echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
-                  echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
-                  echo "FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}" >> $GITHUB_ENV
-                  echo "FIREBASE_SERVICE_ACCOUNT_BASE64=${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" >> $GITHUB_ENV
-                  echo "SURFSHARK_PROXY_USERNAME=${{ secrets.SURFSHARK_PROXY_USERNAME }}" >> $GITHUB_ENV
-                  echo "SURFSHARK_PROXY_PASSWORD=${{ secrets.SURFSHARK_PROXY_PASSWORD }}" >> $GITHUB_ENV
-
-            - name: Decode Firebase service account key
-              run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/firebase-key.json
-
-            - name: Decode Google service account key
-              run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > $GITHUB_WORKSPACE/cryptoskopen-website/firebase-key.json
-
-            - name: Install dependencies
-              run: |
-                  sudo apt-get install python3-pip -y
-                  pip3 install -r requirements.txt
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '22' # Adjust this to your desired Node.js version
-
-            - name: Install NPM dependencies
-              run: npm install firebase-tools@13.13.1
-
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
 
-            - name: Run Python script (in-new.py)
-              run: python3 in/in-new.py
+            - name: Run Python script in/in-new.py
+              run: |
+                  python3 in/in-new.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
                   BASE_DIR: ${{ secrets.BASE_DIR }}
-                  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
                   DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
-                  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-                  FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
-                  SURFSHARK_PROXY_USERNAME: ${{ secrets.SURFSHARK_PROXY_USERNAME }}
-                  SURFSHARK_PROXY_PASSWORD: ${{ secrets.SURFSHARK_PROXY_PASSWORD }}
 
-            - name: Run Python script (main.py)
-              run: python3 rw/main.py
+            - name: Run Python script rw/main.py
+              run: |
+                  python3 rw/main.py
               env:
                   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
                   BASE_DIR: ${{ secrets.BASE_DIR }}
-                  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+                  GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
                   DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
                   MONGO_URI: ${{ secrets.MONGO_URI }}
-                  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-                  FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
-                  SURFSHARK_PROXY_USERNAME: ${{ secrets.SURFSHARK_PROXY_USERNAME }}
-                  SURFSHARK_PROXY_PASSWORD: ${{ secrets.SURFSHARK_PROXY_PASSWORD }}
 
             - name: Deploy to Firebase
               uses: FirebaseExtended/action-hosting-deploy@v0
@@ -210,8 +185,6 @@ jobs:
                   repoToken: ${{ secrets.GITHUB_TOKEN }}
                   firebaseServiceAccount: $GITHUB_WORKSPACE/firebase-key.json
                   channelId: live
-                  projectId: auto-cryptoskopen-1
+                  projectId: auto-cryptoskopen-1 # Replace with your project ID
                   expires: 7d
                   entryPoint: ${{ secrets.BASE_DIR }}
-              env:
-                  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
