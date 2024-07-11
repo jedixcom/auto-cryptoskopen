@@ -40,33 +40,33 @@ jobs:
                   pip3 install -r requirements.txt
 
             - name: Set up OpenVPN configuration
-              run: |
-                  mkdir -p /etc/openvpn
-                  echo '
-                  client
-                  dev tun
-                  proto tcp
-                  remote de-fra.prod.surfshark.com 1443 # Replace with your desired server
-                  remote-random
-                  nobind
-                  tun-mtu 1500
-                  mssfix 1450
-                  ping 15
-                  ping-restart 0
-                  reneg-sec 0
+             run: |
+                 mkdir -p /etc/openvpn
+                 echo '
+                 client
+                 dev tun
+                 proto tcp
+                 remote de-fra.prod.surfshark.com 1443
+                 remote-random
+                 nobind
+                 tun-mtu 1500
+                 mssfix 1450
+                 ping 15
+                 ping-restart 0
+                 reneg-sec 0
 
-                  remote-cert-tls server
+                 remote-cert-tls server
 
-                  auth-user-pass /etc/openvpn/credentials.txt
+                 auth-user-pass /etc/openvpn/credentials.txt
 
-                  #comp-lzo
-                  verb 3
-                  fast-io
-                  cipher AES-256-CBC
+                 #comp-lzo
+                 verb 3
+                 fast-io
+                 cipher AES-256-CBC
 
-                  auth SHA512
+                 auth SHA512
 
-                  <ca>
+                 <ca>
                  -----BEGIN CERTIFICATE-----
                  MIIFTTCCAzWgAwIBAgIJAMs9S3fqwv+mMA0GCSqGSIb3DQEBCwUAMD0xCzAJBgNV
                  BAYTAlZHMRIwEAYDVQQKDAlTdXJmc2hhcmsxGjAYBgNVBAMMEVN1cmZzaGFyayBS
@@ -124,6 +124,9 @@ jobs:
                  -----END OpenVPN Static key V1-----
                  </tls-auth>
                  ' | sudo tee /etc/openvpn/surfshark.conf > /dev/null
+
+           - name: Ensure VPN is connected
+             run: sudo cat /etc/openvpn/surfshark-status.log
 
             - name: Add Surfshark credentials
               run: |
