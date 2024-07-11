@@ -1,4 +1,3 @@
-#feed-extractor.py
 import json
 import requests
 from bs4 import BeautifulSoup
@@ -55,8 +54,8 @@ def fetch_article_details(link, retries=3, backoff_factor=2):
             response.raise_for_status()  # Raise an exception for bad status codes
 
             logging.debug(f"Successfully fetched article details from {link}")
-            full_text, image_url = extract_article_details(response.text)
-            return full_text, image_url
+            full_text, body, image_url = extract_article_details(response.text)
+            return full_text, body, image_url
 
         except requests.exceptions.RequestException as e:
             logging.warning(f"Error fetching URL: {link}. Attempt: {attempt+1}. Error: {e}")
@@ -65,10 +64,10 @@ def fetch_article_details(link, retries=3, backoff_factor=2):
                 logging.info(f"Retrying in {sleep_time} seconds...")
                 time.sleep(sleep_time)
 
-    return None, None  # Return None for both values if all attempts fail
+    return None, None, None  # Return None for all values if all attempts fail
 
 def extract_article_details(html_content):
-    """Extracts full text and image URL from the HTML content of an article."""
+    """Extracts full text, body and image URL from the HTML content of an article."""
     try:
         logging.debug("Extracting article details from HTML content")
         soup = BeautifulSoup(html_content, 'html.parser')
@@ -76,14 +75,16 @@ def extract_article_details(html_content):
         article_body = soup.find('div', class_='post-content')
         full_text = article_body.get_text(separator='\n').strip() if article_body else "Full text not found."
 
+        body = article_body.get_text(separator=' ') if article_body else "Body text not found."
+
         og_image = soup.find('meta', property='og:image')
         image_url = og_image['content'] if og_image and og_image['content'] else "https://example.com/default-image.jpg"
 
-        return full_text, image_url
+        return full_text, body, image_url
 
     except Exception as e:
         logging.error(f"Error extracting article details: {e}")
-        return "Full text not found.", "https://example.com/default-image.jpg"
+        return "Full text not found.", "Body text not found.", "https://example.com/default-image.jpg"
 
 def get_latest_article_date():
     """Retrieves the publication date of the most recent article from the database."""
@@ -116,15 +117,16 @@ def run_script(feed_path, num_articles, category):
                 logging.info(f"Article '{entry['title']}' already exists in the database.")
                 continue
 
-            full_text, image_url = fetch_article_details(entry['link'])
+            full_text, body, image_url = fetch_article_details(entry['link'])
 
-            if full_text and image_url:
+            if full_text and body and image_url:
                 article = {
                     "title": entry['title'],
                     "link": entry['link'],
                     "published": entry['published'],
                     "summary": entry['description'],
                     "full_text": full_text,
+                    "body": body,
                     "image_url": image_url,
                     "category": category if category else None,
                     "processed": False
