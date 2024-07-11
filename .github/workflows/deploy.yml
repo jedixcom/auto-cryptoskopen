@@ -30,9 +30,7 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y python3-pip
                   pip3 install -r requirements.txt
-
-            - name: Install Firebase CLI
-              run: npm install -g firebase-tools@13.13.1
+                  npm install -g firebase-tools@13.13.1
 
             - name: Run Python script
               run: python3 rw/main.py
@@ -45,4 +43,4 @@ jobs:
                   MONGO_URI: ${{ secrets.MONGO_URI }}
 
             - name: Deploy to Firebase
-              run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
+              run: firebase deploy --only hosting --project auto-cryptoskopen-1 --token "${{ secrets.FIREBASE_TOKEN }}"
