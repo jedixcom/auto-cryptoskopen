@@ -39,7 +39,7 @@ jobs:
 
             - name: Install npm
               run: |
-                  npm install -g firebase-tools@latest
+                  npm install -g firebase-tools@13.13.1
 
             - name: Ensure BASE_DIR exists
               run: mkdir -p ${{ secrets.BASE_DIR }}
