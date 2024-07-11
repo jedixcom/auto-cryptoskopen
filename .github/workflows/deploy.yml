@@ -53,7 +53,7 @@ jobs:
 
             - name: Set up OpenVPN configuration
               run: |
-                  mkdir -p $GITHUB_WORKSPAC/openvpn
+                  sudo mkdir -p $GITHUB_WORKSPAC/openvpn
                   echo '
                   client
                   dev tun
