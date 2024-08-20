@@ -39,7 +39,7 @@ idna==2.10
 joblib==1.4.2
 msgpack==1.0.8
 multidict==6.0.5
-nltk==3.8.1
+nltk==3.9
 openai==0.28.0
 proto-plus==1.24.0
 protobuf==4.25.3
